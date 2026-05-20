@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/ui_kits/marketing/index.html" },
+    { "source": "/products", "destination": "/ui_kits/marketing/products.html" },
+    { "source": "/solutions", "destination": "/ui_kits/marketing/solutions.html" },
+    { "source": "/about", "destination": "/ui_kits/marketing/about.html" },
+    { "source": "/contact", "destination": "/ui_kits/marketing/contact.html" }
+  ]
+}
