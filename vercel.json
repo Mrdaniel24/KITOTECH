@@ -1,4 +1,14 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/ui_kits/marketing/index.html" },
     { "source": "/products", "destination": "/ui_kits/marketing/products.html" },
