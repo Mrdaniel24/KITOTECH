@@ -1,0 +1,161 @@
+﻿<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suluhisho - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="solutions.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx"></script>
+
+  <script type="text/babel">
+  const industries = [
+    {
+      id:'hotel', label:'Hoteli & Ukarimu', icon:'building-2', img:'industry-hotel',
+      eyebrow:'HOTELI & UKARIMU',
+      headline:'Wageni wako wanastahili usalama wa kiwango cha juu.',
+      body:'Kutoka mapokezi hadi maegesho, chumba hadi bwawa - mfumo wetu unafunika kila sehemu. Kamera za ColorVu zinatoa picha ya rangi usiku wote, huku AI ikizuia wageni wasioidhinishwa kufika maeneo nyeti.',
+      stats:[{v:'1,200+',l:'Kamera zilizosanikishwa'},{v:'99.97%',l:'Wakati wa kazi'},{v:'<80ms',l:'Ucheleweshaji'}],
+      products:['Kamera ColorVu 4MP','Kitambulisho cha Uso','NVR AcuSense','Intercom ya Video'],
+    },
+    {
+      id:'hospital', label:'Hospitali & Afya', icon:'heart-pulse', img:'industry-hospital',
+      eyebrow:'HOSPITALI & AFYA',
+      headline:'Wagonjwa, wataalamu, na dawa - vyote vikihifadhiwa.',
+      body:'Maeneo nyeti kama vyumba vya upasuaji, dawa, na rekodi zinahitaji udhibiti mkali wa ufikiaji. Mfumo wetu unaunganisha vitambulisho vya wafanyakazi, kamera za AI, na tahadhari za haraka.',
+      stats:[{v:'640+',l:'Vituo vya afya'},{v:'HIPAA',l:'Msaada wa ufuatiliaji'},{v:'24/7',l:'Ufuatiliaji'}],
+      products:['Kamera Dome 4K','Kidhibiti cha Mlango','PTZ SpeedDome','Mfumo wa Taarifa'],
+    },
+    {
+      id:'factory', label:'Viwanda & Uzalishaji', icon:'factory', img:'industry-factory',
+      eyebrow:'VIWANDA & UZALISHAJI',
+      headline:'Tija na usalama - kwa wakati mmoja, kwenye skrini moja.',
+      body:'Laini za uzalishaji, maghala, maegesho ya malori - kamera zetu za thermal na AI zinafuatilia shughuli, kuzuia wizi, na kutoa takwimu za utendaji.',
+      stats:[{v:'360°',l:'Mwonekano kamili'},{v:'Thermal',l:'Ugunduzi wa moto'},{v:'LPR',l:'Utambuzi wa magari'}],
+      products:['Kamera Thermal','Kamera LPR','NVR Enterprise','Hesabu Watu'],
+    },
+    {
+      id:'govt', label:'Serikali & Miundombinu', icon:'landmark', img:'industry-govt',
+      eyebrow:'SERIKALI & MIUNDOMBINU',
+      headline:'Miundombinu muhimu inahitaji ulinzi wa hali ya juu.',
+      body:'Ofisi za serikali, mipaka, bandari, na vituo vya umeme - tunajenga mifumo ya usalama inayostahimili hata mazingira magumu. NDAA-compliant, encrypted.',
+      stats:[{v:'NDAA',l:'Uzingatiaji wa sheria'},{v:'256-bit',l:'Usimbaji fiche'},{v:'99.99%',l:'Upatikanaji'}],
+      products:['Kamera PTZ 4K','Mfumo wa LPR','NVR 256-chaneli','Kidhibiti Mkuu'],
+    },
+    {
+      id:'school', label:'Shule & Vyuo', icon:'graduation-cap', img:'industry-school',
+      eyebrow:'SHULE & VYUO',
+      headline:'Mazingira salama ya kujifunzia - kwa wanafunzi na walimu.',
+      body:'Milango ya shule, ukumbi, maktaba, na maegesho - vitambulisho vya uso vinasimamia ufikiaji wa wanafunzi na watu wa nje.',
+      stats:[{v:'3s',l:'Muda wa utambuzi'},{v:'App',l:'Taarifa kwa simu'},{v:'Cloud',l:'Usimamizi wa mbali'}],
+      products:['Kamera Dome','Kitambulisho cha Uso','Intercom Video','Mfumo wa App'],
+    },
+    {
+      id:'retail', label:'Madukani & Biashara', icon:'shopping-bag', img:'industry-retail',
+      eyebrow:'MADUKANI & BIASHARA',
+      headline:'Wizi mdogo unakugharimu - utatua kweli unalipa.',
+      body:'Kamera za AI zinazohesabu wateja, kutambua tabia ya kutiliwa shaka, na kutoa ripoti ya mauzo - kwa maduka manne au mia moja.',
+      stats:[{v:'-67%',l:'Kupungua kwa wizi'},{v:'Heat map',l:'Uchambuzi wa wateja'},{v:'Multi-site',l:'Matawi'}],
+      products:['Kamera ColorVu','Hesabu Watu AI','NVR Cloud','Dashboard ya Matawi'],
+    },
+  ];
+
+  const SolutionsPage = () => {
+    const [active, setActive] = React.useState('hotel');
+    const ind = industries.find(i => i.id === active);
+
+    return (
+      <>
+        <Nav />
+
+        <section className="page-hero sol-hero">
+          <div className="page-hero-bg" style={{backgroundImage:"url('./assets/images/about-hero.jpg')"}} />
+          <div className="page-hero-overlay" />
+          <div className="container page-hero-content">
+            <div className="eyebrow-row"><span className="eyebrow">SULUHISHO KWA KILA SEKTA</span></div>
+            <h1>Tunaelewa <span className="accent">biashara yako.</span></h1>
+            <p>Kila sekta ina mahitaji yake - na kila mfumo tunaoujenga umetengenezwa kwa makini kwa mazingira yako mahususi.</p>
+          </div>
+          <div className="page-hero-wedge" />
+        </section>
+
+        <section className="sol-section">
+          <div className="container">
+            <div className="sol-tabs">
+              {industries.map(i => (
+                <button key={i.id} className={'sol-tab' + (active === i.id ? ' active' : '')} onClick={() => setActive(i.id)}>
+                  <Icon name={i.icon} size={18} />
+                  <span>{i.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="sol-detail">
+            <div className="container sol-detail-inner">
+              <div className="sol-image">
+                <div className="sol-img-bg" style={{backgroundImage: 'url("./assets/images/' + ind.img + '.jpg")'}}>
+                  <div className="sol-img-fallback"><Icon name="building-2" size={48} /></div>
+                </div>
+                <div className="sol-stats">
+                  {ind.stats.map((s, i) => (
+                    <div className="sol-stat" key={i}>
+                      <div className="sol-stat-val">{s.v}</div>
+                      <div className="sol-stat-label">{s.l}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="sol-copy">
+                <div className="eyebrow">{ind.eyebrow}</div>
+                <h2>{ind.headline}</h2>
+                <p>{ind.body}</p>
+                <div className="sol-products">
+                  <div className="sol-products-label">Bidhaa zinazotumiwa:</div>
+                  <div className="sol-product-chips">
+                    {ind.products.map((p, i) => <span key={i} className="chip">{p}</span>)}
+                  </div>
+                </div>
+                <div className="sol-actions">
+                  <a href="contact.html" className="btn btn-primary btn-skew">Omba Onyesho <Icon name="arrow" size={14} /></a>
+                  <a href="products.html" className="btn btn-dark btn-skew">Angalia Bidhaa <Icon name="arrow" size={14} /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="cta-strip">
+          <div className="cta-strip-wedge" />
+          <div className="container cta-strip-inner">
+            <div>
+              <div className="eyebrow" style={{color:'rgba(255,255,255,0.7)'}}>FANYA HATUA</div>
+              <h2>Tayari kuboresha usalama wa biashara yako?</h2>
+            </div>
+            <a href="contact.html" className="btn btn-ghost btn-skew">Wasiliana Nasi <Icon name="arrow" size={14} /></a>
+          </div>
+        </section>
+
+        <Footer />
+        <Floaters />
+      </>
+    );
+  };
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<SolutionsPage />);
+  </script>
+</body>
+</html>

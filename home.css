@@ -1,0 +1,908 @@
+/* ============================================================
+   KITOTECH — Homepage-specific styles  (TOLEO JIPYA)
+   ============================================================ */
+
+/* -----------------------------------------------------------
+   HERO — Split layout: maandishi kushoto, picha kulia
+   ----------------------------------------------------------- */
+.hero {
+  /* Navy left → dark right */
+  background: linear-gradient(105deg, #0C1A3E 0%, #080E28 35%, #0A0614 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+  overflow: visible;
+  padding-bottom: 0;
+}
+
+/* Mstari mwekundu wa pembeni — brand signature */
+.hero-edge {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, #e1141c 0%, #a30e14 100%);
+  z-index: 10;
+}
+
+/* Mstari wa kugawanya kati ya kushoto na kulia */
+.hero-inner::after {
+  content: '';
+  position: absolute;
+  left: 55%; top: 10%; bottom: 10%;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(225,20,28,0.3) 30%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(225,20,28,0.3) 70%,
+    transparent 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Gridi ya safu mbili */
+.hero-inner {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 760px;
+}
+
+/* ── KUSHOTO — Nakala ──────────────────────────────────────── */
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 64px 64px 64px 48px;
+  gap: 0;
+  position: relative;
+  z-index: 2;
+  /* Deep navy-blue gradient — clearly NOT black */
+  background: linear-gradient(145deg,
+    #0E1E42 0%,
+    #0A1530 40%,
+    #080D22 75%,
+    #060818 100%);
+}
+
+/* Laini ya juu — eyebrow */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 13px/1 var(--font-mono, 'JetBrains Mono', monospace);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #e1141c;
+  margin-bottom: 20px;
+  animation: heroIn 0.55s cubic-bezier(0.16,1,0.3,1) both;
+}
+/* Mstari mwekundu kabla ya maandishi */
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: #e1141c;
+  flex-shrink: 0;
+}
+
+/* Kichwa kikuu */
+.hero-copy h1 {
+  font: 700 clamp(48px, 5.5vw, 80px)/1.06 var(--font-display, 'Barlow Condensed', sans-serif);
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 20px;
+  animation: heroIn 0.55s 0.08s cubic-bezier(0.16,1,0.3,1) both;
+}
+/* Maneno ya italic nyekundu kwenye kichwa */
+.hero-copy h1 .accent {
+  color: #e1141c;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Maelezo ya kichwa */
+.hero-sub {
+  font: 400 18px/1.7 var(--font-body, 'Inter', sans-serif);
+  color: rgba(255,255,255,0.70);
+  margin: 0 0 36px;
+  max-width: 500px;
+  animation: heroIn 0.55s 0.14s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* Vitufe vya vitendo */
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  animation: heroIn 0.55s 0.20s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* Kituo cha primary — nyekundu solid */
+.btn-primary {
+  background: #e1141c;
+  color: #ffffff;
+  border: 1px solid #e1141c;
+  font: 700 11px/1 var(--font-mono, monospace);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+}
+.btn-primary:hover {
+  background: #c50f16;
+  transform: translateY(-1px);
+}
+
+/* Kituo cha ghost — mwanga kwenye giza */
+.btn-outline-light {
+  background: transparent;
+  color: rgba(255,255,255,0.82);
+  border: 1px solid rgba(255,255,255,0.25);
+  font: 700 11px/1 var(--font-mono, monospace);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+}
+.btn-outline-light:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
+
+/* Dots za kubadilisha slide */
+.hero-dots {
+  display: flex;
+  gap: 7px;
+  margin-top: 28px;
+  animation: heroIn 0.55s 0.26s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero-dots span {
+  width: 7px; height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.hero-dots span.active {
+  background: #e1141c;
+  width: 24px;
+}
+
+/* ── KULIA — Picha / Visual ───────────────────────────────── */
+.hero-visual {
+  position: relative;
+  overflow: hidden;
+  /* Rich deep gradient — navy to dark crimson */
+  background: linear-gradient(145deg, #0D1428 0%, #12081A 50%, #1A0510 100%);
+  /* Kata diagonal ya kushoto — brand signature */
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Picha za slides */
+.hero-img {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #0e0e12;
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+  z-index: 2;
+}
+.hero-img.active { opacity: 1; }
+/* Gradient nyeusi juu ya picha kwa usomaji wa badge */
+.hero-img.active::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(5,5,7,0.12) 0%, rgba(5,5,7,0.48) 100%);
+}
+
+/* ── Fallback — pale picha haipo ─────────────────────────── */
+.hero-fallback {
+  position: absolute; inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Multi-stop cinematic gradient */
+  background: linear-gradient(
+    145deg,
+    #0D1830 0%,
+    #111020 35%,
+    #1A0818 65%,
+    #0E0515 100%
+  );
+  z-index: 1;
+}
+/* Gridi ndogo ndogo nyuma */
+.hero-fallback-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+/* Mwanga wa rangi nyuma — red + blue brand glows */
+.hero-fallback-glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 70% 35%, rgba(225,20,28,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 25% 70%, rgba(26,55,213,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 100%, rgba(100,10,30,0.20) 0%, transparent 40%);
+}
+/* Logo kubwa yenye opacity ndogo */
+.hero-fallback-logo {
+  height: 88px;
+  opacity: 0.13;
+  position: relative;
+  z-index: 1;
+  filter: brightness(10);
+}
+
+/* ── Tech overlay: scan line + corner brackets ────────────── */
+.hero-tech-overlay {
+  position: absolute; inset: 0;
+  z-index: 3;   /* above images (z-index 2) */
+  pointer-events: none;
+}
+
+/* Mstari unaosogea chini — scan effect */
+.hero-scan-line {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(225,20,28,0.55), transparent);
+  animation: scanDown 4s linear infinite;
+}
+@keyframes scanDown {
+  0%   { top: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Pembe za teknolojia */
+.hero-corner {
+  position: absolute;
+  width: 20px; height: 20px;
+}
+.hero-corner.tl {
+  top: 20px; left: 32px;
+  border-top: 2px solid #e1141c;
+  border-left: 2px solid #e1141c;
+}
+.hero-corner.tr {
+  top: 20px; right: 20px;
+  border-top: 2px solid rgba(255,255,255,0.18);
+  border-right: 2px solid rgba(255,255,255,0.18);
+}
+.hero-corner.bl {
+  bottom: 20px; left: 32px;
+  border-bottom: 2px solid rgba(255,255,255,0.18);
+  border-left: 2px solid rgba(255,255,255,0.18);
+}
+.hero-corner.br {
+  bottom: 20px; right: 20px;
+  border-bottom: 2px solid #e1141c;
+  border-right: 2px solid #e1141c;
+}
+
+/* ── Badges za data kwenye picha ──────────────────────────── */
+.hero-badge {
+  position: absolute; z-index: 4;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(5,5,7,0.78);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  font: 600 10px/1 var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.hero-badge-top    { top: 24px;    left: 40px;  }
+.hero-badge-bottom { bottom: 24px; right: 24px; }
+
+/* Dot inayopiga — LIVE indicator */
+.hero-badge .live-dot {
+  width: 6px; height: 6px;
+  border-radius: 999px;
+  background: #e1141c;
+  flex-shrink: 0;
+  animation: livepulse 1.4s ease-in-out infinite;
+}
+.hero-badge-label { color: #e1141c; }
+.hero-badge-val   { color: rgba(255,255,255,0.72); }
+.hero-badge svg   { color: #e1141c; flex-shrink: 0; }
+
+/* ── Stats panel inayoelea chini ya hero ──────────────────── */
+.hero-float-stats {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  background: #ffffff;
+  border-radius: 2px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.14),
+    0 2px 8px rgba(0,0,0,0.08),
+    0 0 0 1px rgba(0,0,0,0.05);
+
+  width: max-content;
+  max-width: calc(100vw - 64px);
+  overflow: hidden;
+}
+
+/* Kila sehemu ya stat */
+.hfs-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 32px;
+  gap: 5px;
+  min-width: 160px;
+  position: relative;
+  transition: background 0.2s;
+}
+.hfs-item:hover { background: #f9f9f9; }
+/* Mstari mwekundu juu ya kila stat kwenye hover */
+.hfs-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: #e1141c;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.hfs-item:hover::before { transform: scaleX(1); }
+
+/* Nambari kubwa na suffix — LAZIMA zikae pamoja mstari mmoja */
+.hfs-num {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+  white-space: nowrap;
+  width: max-content;
+}
+.hfs-prefix {
+  display: inline;
+  font: 800 22px/1 var(--font-display, sans-serif);
+  color: #e1141c;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+.hfs-val {
+  display: inline;
+  font: 800 36px/1 var(--font-display, sans-serif);
+  color: #0a0a0a;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+.hfs-unit {
+  display: inline;
+  font: 800 22px/1 var(--font-display, sans-serif);
+  color: #e1141c;
+  margin-left: 2px;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+/* Maandishi madogo chini ya nambari */
+.hfs-label {
+  font: 500 10px/1.4 var(--font-body, sans-serif);
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+/* Kizuizi kati ya stats */
+.hfs-sep {
+  width: 1px;
+  background: rgba(0,0,0,0.07);
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes livepulse {
+  0%,100% { box-shadow: 0 0 0 2px rgba(225,20,28,0.3); }
+  50%     { box-shadow: 0 0 0 5px rgba(225,20,28,0.06); }
+}
+
+/* -----------------------------------------------------------
+   STATS STRIP — kadi za depth kwenye giza
+   ----------------------------------------------------------- */
+.stats-strip {
+  background: #050507;
+  padding: 56px 0;
+  position: relative;
+  overflow: hidden;
+}
+/* Mwanga mwekundu nyuma */
+.stats-strip::before {
+  content: '';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%; height: 80%;
+  background: radial-gradient(ellipse, rgba(225,20,28,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  position: relative; z-index: 1;
+}
+
+/* Kila kadi ya stat */
+.stat-item {
+  background: linear-gradient(145deg, #161618 0%, #0f0f11 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow:
+    0 20px 40px -12px rgba(0,0,0,0.7),
+    inset 0 1px 1px rgba(255,255,255,0.05),
+    inset 0 -1px 1px rgba(0,0,0,0.4);
+  padding: 28px 24px 24px;
+  display: flex; flex-direction: column; gap: 0;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.stat-item:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 32px 56px -12px rgba(0,0,0,0.8),
+    0 0 0 1px rgba(225,20,28,0.28),
+    inset 0 1px 1px rgba(255,255,255,0.07),
+    inset 0 -1px 1px rgba(0,0,0,0.4);
+}
+/* Mstari mwekundu juu ya kila kadi */
+.stat-item::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: #e1141c;
+}
+/* Mwanga ndani kwenye hover */
+.stat-item::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(225,20,28,0.07), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+.stat-item:hover::after { opacity: 1; }
+
+/* Ikoni ya stat */
+.stat-icon {
+  width: 36px; height: 36px;
+  background: rgba(225,20,28,0.12);
+  border: 1px solid rgba(225,20,28,0.22);
+  display: grid; place-items: center;
+  color: #e1141c;
+  margin-bottom: 18px;
+}
+
+/* Nambari + prefix + unit */
+.stat-val {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+.stat-prefix {
+  font: 700 28px/1 var(--font-display, sans-serif);
+  color: #e1141c;
+  letter-spacing: -0.01em;
+}
+.stat-num {
+  font: 700 40px/1 var(--font-display, sans-serif);
+  color: #ffffff;
+  letter-spacing: -0.03em;
+}
+.stat-unit {
+  font: 700 22px/1 var(--font-display, sans-serif);
+  color: #e1141c;
+  letter-spacing: -0.01em;
+  margin-left: 2px;
+}
+.stat-label {
+  font: 500 11px/1.4 var(--font-body, sans-serif);
+  color: rgba(255,255,255,0.42);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* -----------------------------------------------------------
+   ABOUT INTRO
+   ----------------------------------------------------------- */
+.intro-section {
+  position: relative;
+  padding: 96px 0;
+  padding-top: 96px;
+  background: #f5f5f3;
+  overflow: hidden;
+  margin-top: 56px; /* nafasi ya stats panel inayoelea (bottom: -32px + kidogo zaidi) */
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.intro-copy .eyebrow {
+  display: block;
+  color: #e1141c;
+  margin-bottom: 16px;
+}
+.intro-copy h2 {
+  font: 700 clamp(28px, 3.5vw, 42px)/1.1 var(--font-display, sans-serif);
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+  margin: 0 0 22px;
+}
+.intro-copy h2 .accent-red { color: #e1141c; }
+.intro-copy p {
+  font: 400 15px/1.7 var(--font-body, sans-serif);
+  color: #555;
+  margin: 0 0 16px;
+}
+.intro-more {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 8px;
+  font: 600 12px/1 var(--font-body, sans-serif);
+  color: #e1141c;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transition: gap 0.2s;
+}
+.intro-more:hover { gap: 12px; }
+
+.hik-badge {
+  display: flex; align-items: center; gap: 16px;
+  margin-top: 28px; padding: 16px 20px;
+  background: #ececea;
+  border: 1px solid rgba(0,0,0,0.09);
+  max-width: 380px;
+}
+.hik-badge-logo { height: 32px; }
+.hik-badge-divider { width: 1px; height: 32px; background: rgba(0,0,0,0.1); }
+.hik-badge-title {
+  font: 700 10px/1 var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #222;
+}
+.hik-badge-sub {
+  font: 400 11px/1 var(--font-body, sans-serif);
+  color: #666;
+  margin-top: 4px;
+}
+
+.intro-image { position: relative; aspect-ratio: 5/4; }
+.intro-img-bg {
+  position: absolute; inset: 0;
+  background-color: var(--ink-2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.intro-img-fallback {
+  display: none; /* picha halisi zipo */
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #111, #050507);
+  display: none;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.3);
+  font: 500 10px/1 var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.intro-img-badge {
+  position: absolute; bottom: -1px; right: -1px;
+  background: #e1141c; color: #fff;
+  padding: 14px 24px;
+  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+  font: 700 13px/1 var(--font-display, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+/* -----------------------------------------------------------
+   PRINCIPAL SERVICES
+   ----------------------------------------------------------- */
+.principal-services {
+  padding: 96px 0;
+  background: #ffffff;
+}
+.ps-head { text-align: center; margin-bottom: 56px; }
+.ps-head .eyebrow { display: block; color: #e1141c; margin-bottom: 14px; }
+.ps-head h2 {
+  font: 700 clamp(28px, 3.5vw, 42px)/1.08 var(--font-display, sans-serif);
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+  margin: 0 0 16px;
+}
+.ps-head h2 .accent { color: #e1141c; }
+.ps-head p {
+  font: 400 15px/1.65 var(--font-body, sans-serif);
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.ps-card {
+  background: #ffffff;
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.ps-card:hover { background: #f8f8f8; }
+.ps-card:hover .ps-media-img { transform: scale(1.04); }
+
+.ps-media { aspect-ratio: 4/3; position: relative; overflow: hidden; }
+.ps-media-img {
+  position: absolute; inset: 0;
+  background-color: #111;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.ps-media-fallback { display: none; }
+.ps-media-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(5,5,7,0.5) 100%);
+}
+.ps-info { padding: 22px 20px; flex: 1; display: flex; flex-direction: column; }
+.ps-info h4 {
+  font: 700 15px/1.2 var(--font-display, sans-serif);
+  color: #0a0a0a;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ps-info p {
+  font: 400 13px/1.6 var(--font-body, sans-serif);
+  color: #666;
+  margin: 0 0 16px;
+  flex: 1;
+}
+.ps-link {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: auto;
+  font: 600 11px/1 var(--font-body, sans-serif);
+  color: #e1141c;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: gap 0.2s;
+}
+.ps-card:hover .ps-link { gap: 10px; }
+.ps-cta { text-align: center; margin-top: 40px; }
+
+/* -----------------------------------------------------------
+   SOLUTIONS TEASER
+   ----------------------------------------------------------- */
+.solutions-teaser { padding: 96px 0; background: #f0efed; }
+.sol-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 0;
+}
+.sol-teaser-card {
+  display: flex; flex-direction: column;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #ffffff;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.sol-teaser-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+}
+.sol-teaser-img {
+  aspect-ratio: 16/9; position: relative; overflow: hidden;
+  background-color: #111;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.sol-teaser-fallback { display: none; }
+.sol-teaser-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(5,5,7,0.45) 100%);
+}
+/* Zoom effect on hover — applied to the container's background */
+.sol-teaser-card:hover .sol-teaser-img { transform: scale(1.04); }
+.sol-teaser-body {
+  padding: 18px 20px;
+  display: flex; align-items: center; gap: 12px;
+  font: 600 13px/1 var(--font-display, sans-serif);
+  color: #0a0a0a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-top: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+.sol-teaser-body svg { color: #e1141c; flex-shrink: 0; }
+.sol-teaser-card:hover .sol-teaser-body {
+  border-top-color: #e1141c;
+  color: #e1141c;
+}
+.sol-teaser-cta { text-align: center; margin-top: 40px; }
+
+/* -----------------------------------------------------------
+   MARQUEE STRIP
+   ----------------------------------------------------------- */
+.marquee-strip {
+  background: #f0efed;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 24px 0;
+}
+.marquee-label {
+  text-align: center;
+  font: 600 10px/1 var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #aaa;
+  margin-bottom: 16px;
+}
+.marquee-track-wrap { position: relative; overflow: hidden; }
+.marquee-fade-l,
+.marquee-fade-r {
+  position: absolute; top: 0; bottom: 0; width: 80px;
+  pointer-events: none; z-index: 2;
+}
+.marquee-fade-l { left:  0; background: linear-gradient(to right, #f0efed, transparent); }
+.marquee-fade-r { right: 0; background: linear-gradient(to left,  #f0efed, transparent); }
+.marquee-track {
+  display: flex; gap: 12px;
+  width: max-content;
+  animation: marquee-scroll 28s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  font: 600 12px/1 var(--font-body, sans-serif);
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+.marquee-chip svg { color: #e1141c; flex-shrink: 0; }
+.marquee-chip:hover { border-color: #e1141c; color: #e1141c; }
+
+/* -----------------------------------------------------------
+   CTA STRIP
+   ----------------------------------------------------------- */
+.cta-strip {
+  background: #050507;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.cta-strip-wedge {
+  position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+  background: #e1141c;
+}
+.cta-strip::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(225,20,28,0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  position: relative; z-index: 1;
+}
+.cta-strip-inner h2 {
+  font: 700 clamp(24px, 3vw, 36px)/1.1 var(--font-display, sans-serif);
+  color: #ffffff;
+  margin: 10px 0 0;
+  letter-spacing: -0.02em;
+  max-width: 540px;
+}
+.btn-ghost {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.3);
+  font: 700 11px/1 var(--font-mono, monospace);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* -----------------------------------------------------------
+   RESPONSIVE
+   ----------------------------------------------------------- */
+@media (max-width: 960px) {
+  .hero-inner         { grid-template-columns: 1fr; min-height: auto; }
+  .hero-copy          { padding: 48px 32px 40px; justify-content: flex-start; }
+  .hero-visual        { height: 280px; clip-path: none; }
+  .hero-float-stats   {
+    position: relative; bottom: auto; left: auto; transform: none;
+    width: 100%; max-width: 100%; border-radius: 0;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .hfs-item           { flex: 1; min-width: 140px; }
+  .hfs-sep            { display: none; }
+  .intro-grid         { grid-template-columns: 1fr; gap: 48px; }
+  .ps-grid            { grid-template-columns: repeat(2, 1fr); }
+  .sol-teaser-grid    { grid-template-columns: repeat(2, 1fr); }
+  .stats-inner        { grid-template-columns: repeat(2, 1fr); }
+  .cta-strip-inner    { flex-direction: column; text-align: center; }
+}
+@media (max-width: 640px) {
+  .hero-copy          { padding: 36px 20px 28px; }
+  .hero-copy h1       { font-size: 28px; }
+  .hero-visual        { height: 220px; }
+  .hero-float-stats   { flex-wrap: wrap; }
+  .hfs-item           { min-width: 45%; border-bottom: 1px solid rgba(0,0,0,0.07); }
+  .hfs-val            { font-size: 28px; }
+  .ps-grid            { grid-template-columns: 1fr; }
+  .sol-teaser-grid    { grid-template-columns: 1fr; }
+}

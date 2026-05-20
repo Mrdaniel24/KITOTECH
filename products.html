@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bidhaa - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="products.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx"></script>
+
+  <script type="text/babel">
+  const categories = [
+    { id:'cam',    label:'Kamera',             icon:'camera' },
+    { id:'access', label:'Udhibiti wa Mlango', icon:'door-open' },
+    { id:'nvr',    label:'NVR / DVR',          icon:'server' },
+    { id:'ai',     label:'AI & Tahadhari',     icon:'cpu' },
+  ];
+
+  const products = {
+    cam: [
+      { code:'DS-2CD2T47G2-L',      name:'Kamera ya Mtandao 4MP ColorVu',   specs:['4MP - 60fps','ColorVu - rangi usiku','IR 60m','IP67 - IK10'],   img:'product-cam' },
+      { code:'DS-2DE4425IWG-E',     name:'PTZ SpeedDome 4MP',               specs:['4MP - 25x','Pan 360°','IR 100m','Deep Learning AI'],             img:'product-cam' },
+      { code:'DS-2CD2T47G2P-LSU/SL',name:'Kamera Panoramiki 4MP',           specs:['180° panoramiki','Strobe & Sauti','H.265+','IP67'],              img:'product-cam' },
+      { code:'DS-2CD2386G2-ISU/SL', name:'Fisheye 8MP',                     specs:['8MP - 360°','Deep Learning','IR 10m','IP67'],                    img:'product-cam' },
+    ],
+    access: [
+      { code:'DS-K1T671TM-3XF',  name:'Kitambulisho cha Uso 3D',     specs:['Uso 3D - Vidole','Uwezo 6,000','Jibu <0.2s','IP65'],    img:'product-door' },
+      { code:'DS-K2601T',        name:'Kidhibiti cha Mlango',         specs:['Milango 1','Winguuni / ndani','RS-485','POE+'],          img:'product-door' },
+      { code:'DS-K3B671TX-LMFP', name:'Mlango wa Turniketi Smart',   specs:['Uso + QR + Kadi','Kasi ya juu','OLED screen','IP54'],   img:'product-door' },
+      { code:'DS-PHA200-EE2',    name:'Intercom ya Mlango (Video)',  specs:['2MP - H.265','Two-way audio','App ya simu','IP65'],      img:'product-door' },
+    ],
+    nvr: [
+      { code:'DS-7608NXI-I2/S',    name:'NVR AcuSense 8-chaneli',    specs:['8ch - 4K','AcuSense AI','HDD 2x','HDMI 4K'],        img:'product-nvr' },
+      { code:'DS-7732NXI-I4/24P/S',name:'NVR 32-chaneli POE',         specs:['32ch - 8MP','PoE+ 24port','Deep Learning','RAID'],   img:'product-nvr' },
+      { code:'DS-96256NI-I24',     name:'NVR Enterprise 256ch',       specs:['256ch - 32MP','4x HDMI 4K','RAID 0/1/5/10','HDD'],  img:'product-nvr' },
+      { code:'DS-7204HGHI-K1',     name:'DVR TurboHD 4-chaneli',      specs:['4ch - 1080p','H.265+','Analogi + IP','HDD 1x'],     img:'product-nvr' },
+    ],
+    ai: [
+      { code:'IDS-2CD7547G0/P', name:'Kamera ya Utambuzi wa Gari',  specs:['4MP - LPR','Usomaji 99%','IR 30m','IP66'],         img:'product-ai' },
+      { code:'DS-2CD8626G0/P',  name:'Kamera ya Kuhesabu Watu',     specs:['2MP','Hesabu ndani/nje','Heat map','IP67'],         img:'product-ai' },
+      { code:'IDS-7716NXI-M4',  name:'NVR DeepinMind AI',           specs:['16ch - 4K','Uso + Mwili','Tafuta kwa picha','AI'], img:'product-ai' },
+      { code:'DS-2XS6A46G0',    name:'Kamera ya Jua (Solar)',        specs:['4MP - ColorVu','Solar + Betri','4G + WiFi','IP67'],img:'product-ai' },
+    ],
+  };
+
+  const ProductsPage = () => {
+    const [active, setActive] = React.useState('cam');
+    const list = products[active];
+
+    return (
+      <>
+        <Nav />
+
+        <section className="page-hero">
+          <div className="page-hero-bg" style={{backgroundImage:"url('./assets/images/product-cam.jpg')"}} />
+          <div className="page-hero-overlay" />
+          <div className="container page-hero-content">
+            <div className="eyebrow-row"><span className="eyebrow">BIDHAA ZETU</span></div>
+            <h1>Teknolojia Inayotambuliwa <span className="accent">Duniani.</span></h1>
+            <p>Bidhaa zote ni za Hikvision - chaguo la kwanza la wataalamu wa usalama katika nchi 150+. Zinauzwa na kusanikishwa na wakala aliyeidhinishwa rasmi.</p>
+          </div>
+          <div className="page-hero-wedge" />
+        </section>
+
+        <div className="hik-banner">
+          <div className="container hik-inner">
+            <img src="./assets/logo-mark.png" alt="Kitotech" className="hik-kt-logo" />
+            <div className="hik-divider" />
+            <div>
+              <div className="hik-label">WAKALA ALIYEIDHINISHWA RASMI</div>
+              <div className="hik-sub">Hikvision &middot; Afrika Mashariki &amp; Nigeria</div>
+            </div>
+            <div className="hik-spacer" />
+            <a href="contact.html" className="btn btn-primary btn-skew">Omba Bei <Icon name="arrow" size={14} /></a>
+          </div>
+        </div>
+
+        <section className="products-section">
+          <div className="container">
+            <div className="cat-tabs">
+              {categories.map(c => (
+                <button key={c.id} className={'cat-tab' + (active === c.id ? ' active' : '')} onClick={() => setActive(c.id)}>
+                  <Icon name={c.icon} size={18} />
+                  {c.label}
+                </button>
+              ))}
+            </div>
+            <div className="products-grid">
+              {list.map(p => (
+                <div className="prod-card" key={p.code}>
+                  <div className="prod-img" style={{backgroundImage: 'url("./assets/images/' + p.img + '.jpg")'}}>
+                    <div className="prod-img-fallback">
+                      <Icon name="camera" size={32} />
+                    </div>
+                    <div className="prod-code">{p.code}</div>
+                  </div>
+                  <div className="prod-body">
+                    <h3>{p.name}</h3>
+                    <ul className="prod-specs">
+                      {p.specs.map((s, i) => <li key={i}><Icon name="check" size={12} />{s}</li>)}
+                    </ul>
+                    <a href="contact.html" className="prod-cta">Omba Bei <Icon name="arrow" size={12} /></a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="cta-strip">
+          <div className="cta-strip-wedge" />
+          <div className="container cta-strip-inner">
+            <div>
+              <div className="eyebrow" style={{color:'rgba(255,255,255,0.7)'}}>ANZA LEO</div>
+              <h2>Unahitaji bidhaa au ushauri wa kitaalamu?</h2>
+            </div>
+            <a href="contact.html" className="btn btn-ghost btn-skew">Wasiliana Nasi <Icon name="arrow" size={14} /></a>
+          </div>
+        </section>
+
+        <Footer />
+        <Floaters />
+      </>
+    );
+  };
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<ProductsPage />);
+  </script>
+</body>
+</html>

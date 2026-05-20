@@ -1,0 +1,179 @@
+﻿<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wasiliana Nasi - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="contact.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx"></script>
+
+  <script type="text/babel">
+  const services = [
+    'Kamera za Usalama (CCTV)',
+    'Udhibiti wa Mlango (Access Control)',
+    'NVR / DVR / Usimamizi wa Picha',
+    'Mfumo wa AI & Tahadhari',
+    'Matengenezo & Huduma',
+    'Ushauri wa Kitaalamu',
+  ];
+
+  const ContactPage = () => {
+    const [sent, setSent] = React.useState(false);
+    const [form, setForm] = React.useState({ jina:'', kampuni:'', simu:'', email:'', huduma:'', ujumbe:'' });
+    const handle = e => setForm({...form, [e.target.name]: e.target.value});
+    const submit = e => { e.preventDefault(); setSent(true); };
+
+    return (
+      <>
+        <Nav />
+
+        <section className="page-hero contact-hero">
+          <div className="page-hero-bg" style={{backgroundImage:"url('./assets/images/about-hero.jpg')"}} />
+          <div className="page-hero-overlay" />
+          <div className="container page-hero-content">
+            <div className="eyebrow-row"><span className="eyebrow">WASILIANA NASI</span></div>
+            <h1>Tuko tayari <span className="accent">kukusaidia.</span></h1>
+            <p>Omba onyesho, pata bei, au uliza swali lolote - timu yetu itakujibu ndani ya masaa 4.</p>
+          </div>
+          <div className="page-hero-wedge" />
+        </section>
+
+        <section className="contact-section">
+          <div className="container contact-grid">
+
+            <div className="contact-form-col">
+              <h2>Tuma Ujumbe</h2>
+              {sent ? (
+                <div className="form-success">
+                  <Icon name="check-circle" size={40} />
+                  <h3>Ujumbe umepokewa.</h3>
+                  <p>Tutawasiliana nawe ndani ya masaa 4. Asante kwa kuamini Kitotech.</p>
+                </div>
+              ) : (
+                <form className="form-stack" onSubmit={submit}>
+                  <div className="form-row-2">
+                    <div className="form-row">
+                      <label>Jina lako *</label>
+                      <input className="field" name="jina" value={form.jina} onChange={handle} required placeholder="Juma Mwangi" />
+                    </div>
+                    <div className="form-row">
+                      <label>Kampuni / Taasisi</label>
+                      <input className="field" name="kampuni" value={form.kampuni} onChange={handle} placeholder="Sarova Hotels Ltd" />
+                    </div>
+                  </div>
+                  <div className="form-row-2">
+                    <div className="form-row">
+                      <label>Nambari ya Simu *</label>
+                      <input className="field" name="simu" value={form.simu} onChange={handle} required placeholder="+254 700 000 000" />
+                    </div>
+                    <div className="form-row">
+                      <label>Barua Pepe</label>
+                      <input className="field" type="email" name="email" value={form.email} onChange={handle} placeholder="juma@sarova.com" />
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <label>Huduma unayohitaji</label>
+                    <select className="field field-select" name="huduma" value={form.huduma} onChange={handle}>
+                      <option value="">Chagua huduma...</option>
+                      {services.map((s, i) => <option key={i} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+                  <div className="form-row">
+                    <label>Ujumbe wako *</label>
+                    <textarea className="field" name="ujumbe" value={form.ujumbe} onChange={handle} required rows={5} placeholder="Niambie zaidi kuhusu mradi wako..." />
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-skew submit-btn">
+                    Tuma Ujumbe <Icon name="send" size={14} />
+                  </button>
+                </form>
+              )}
+            </div>
+
+            <div className="contact-info-col">
+              <h2>Mawasiliano</h2>
+              <div className="info-blocks">
+                <div className="info-block">
+                  <div className="info-icon"><Icon name="map-pin" size={20} /></div>
+                  <div>
+                    <div className="info-label">OFISI KUU - NAIROBI</div>
+                    <div className="info-val">Upperhill Road, Nairobi<br />Kenya 00100</div>
+                  </div>
+                </div>
+                <div className="info-block">
+                  <div className="info-icon"><Icon name="phone" size={20} /></div>
+                  <div>
+                    <div className="info-label">SIMU</div>
+                    <div className="info-val">+254 700 000 000</div>
+                  </div>
+                </div>
+                <div className="info-block">
+                  <div className="info-icon"><Icon name="message-circle" size={20} /></div>
+                  <div>
+                    <div className="info-label">WHATSAPP</div>
+                    <div className="info-val">+254 700 000 001</div>
+                    <div className="info-sub">Jibu la haraka - mchana na usiku</div>
+                  </div>
+                </div>
+                <div className="info-block">
+                  <div className="info-icon"><Icon name="mail" size={20} /></div>
+                  <div>
+                    <div className="info-label">BARUA PEPE</div>
+                    <div className="info-val">biashara@kitotech.com</div>
+                  </div>
+                </div>
+                <div className="info-block">
+                  <div className="info-icon"><Icon name="clock" size={20} /></div>
+                  <div>
+                    <div className="info-label">MASAA YA KAZI</div>
+                    <div className="info-val">Jumatatu - Ijumaa: 08:00 - 18:00<br />Jumamosi: 09:00 - 14:00</div>
+                    <div className="info-sub">Dharura: +254 700 000 002 (24/7)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contact-map">
+                <div className="contact-map-inner">
+                  <div className="map-pin-dot" />
+                  <div className="map-label">Upperhill, Nairobi</div>
+                  <div className="map-grid" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <div className="response-strip">
+          <div className="container response-inner">
+            <div className="resp-item"><Icon name="clock" size={20} /><span>Majibu ndani ya masaa <strong>4</strong></span></div>
+            <div className="resp-divider" />
+            <div className="resp-item"><Icon name="phone" size={20} /><span>Dharura: <strong>24/7</strong></span></div>
+            <div className="resp-divider" />
+            <div className="resp-item"><Icon name="shield-check" size={20} /><span>Dhamana ya miaka <strong>2</strong></span></div>
+          </div>
+        </div>
+
+        <Footer />
+        <Floaters />
+      </>
+    );
+  };
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<ContactPage />);
+  </script>
+</body>
+</html>

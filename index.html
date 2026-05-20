@@ -1,11 +1,170 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="sw">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/ui_kits/marketing/index.html">
-  <title>Kitotech Group LTD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kitotech Group LTD - Suluhisho la Teknolojia na Usalama</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="home.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
 <body>
-  <script>window.location.replace('/ui_kits/marketing/index.html');</script>
+  <div id="app"></div>
+
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Hero.jsx"></script>
+  <script type="text/babel" src="AboutIntro.jsx"></script>
+  <script type="text/babel" src="PrincipalServices.jsx"></script>
+  <script type="text/babel" src="Contact.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx"></script>
+
+  <script type="text/babel">
+
+  // Industries for solutions teaser
+  const industries = [
+    { icon:'building-2',    label:'Hoteli & Ukarimu',     img:'industry-hotel' },
+    { icon:'heart-pulse',   label:'Hospitali & Afya',     img:'industry-hospital' },
+    { icon:'factory',       label:'Viwanda & Uzalishaji', img:'industry-factory' },
+    { icon:'landmark',      label:'Serikali',             img:'industry-govt' },
+    { icon:'graduation-cap',label:'Shule & Vyuo',         img:'industry-school' },
+    { icon:'shopping-bag',  label:'Madukani',             img:'industry-retail' },
+  ];
+
+  // Scroll reveal hook
+  const useReveal = (selector) => {
+    const ref = React.useRef(null);
+    React.useEffect(() => {
+      if (!ref.current) return;
+      const els = selector
+        ? ref.current.querySelectorAll(selector)
+        : [ref.current];
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(el => obs.observe(el));
+      return () => obs.disconnect();
+    }, []);
+    return ref;
+  };
+
+  // Solutions teaser section
+  const SolutionsTeaser = () => {
+    const ref = useReveal('.reveal-up');
+    return (
+      <section className="solutions-teaser" ref={ref}>
+        <div className="container">
+          <div className="section-head reveal-up">
+            <span className="eyebrow">SULUHISHO KWA KILA SEKTA</span>
+            <h2>Tunaelewa biashara <span style={{color:'var(--brand-red)'}}>yako.</span></h2>
+          </div>
+          <div className="sol-teaser-grid">
+            {industries.map((ind, i) => (
+              <a
+                key={i}
+                href="solutions.html"
+                className="sol-teaser-card reveal-up"
+                style={{'--delay': (i * 0.08) + 's'}}
+              >
+                <div
+                  className="sol-teaser-img"
+                  style={{backgroundImage: 'url("./assets/images/' + ind.img + '.jpg")'}}
+                >
+                  <div className="sol-teaser-fallback" />
+                  <div className="sol-teaser-overlay" />
+                </div>
+                <div className="sol-teaser-body">
+                  <Icon name={ind.icon} size={20} />
+                  <span>{ind.label}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div className="sol-teaser-cta">
+            <a href="solutions.html" className="btn btn-dark btn-skew">
+              Angalia Suluhisho Zote <Icon name="arrow" size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // Marquee strip
+  const marqueeItems = [
+    { icon:'building-2',     label:'Hoteli' },
+    { icon:'heart-pulse',    label:'Hospitali' },
+    { icon:'factory',        label:'Viwanda' },
+    { icon:'landmark',       label:'Serikali' },
+    { icon:'graduation-cap', label:'Shule' },
+    { icon:'shopping-bag',   label:'Madukani' },
+    { icon:'plane',          label:'Viwanja vya Ndege' },
+    { icon:'fuel',           label:'Vituo vya Mafuta' },
+    { icon:'warehouse',      label:'Ghala' },
+    { icon:'bank',           label:'Benki' },
+  ];
+
+  const MarqueeStrip = () => {
+    const doubled = [...marqueeItems, ...marqueeItems];
+    return (
+      <div className="marquee-strip">
+        <div className="marquee-label">SEKTA TUNAZOHUDUMIA</div>
+        <div className="marquee-track-wrap">
+          <div className="marquee-fade-l" />
+          <div className="marquee-fade-r" />
+          <div className="marquee-track">
+            {doubled.map((m, i) => (
+              <div className="marquee-chip" key={i}>
+                <Icon name={m.icon} size={16} />
+                <span>{m.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // CTA strip
+  const HomeCtaStrip = () => (
+    <section className="cta-strip">
+      <div className="cta-strip-wedge" />
+      <div className="container cta-strip-inner">
+        <div>
+          <div className="eyebrow" style={{color:'rgba(255,255,255,0.6)'}}>ANZA LEO</div>
+          <h2>Tayari kujenga mfumo wa usalama wa kiwango cha kimataifa?</h2>
+        </div>
+        <a href="contact.html" className="btn btn-ghost btn-skew">
+          Wasiliana Nasi <Icon name="arrow" size={14} />
+        </a>
+      </div>
+    </section>
+  );
+
+  // App
+  const App = () => (
+    <>
+      <Nav />
+      <Hero />
+      <AboutIntro />
+      <PrincipalServices />
+      <SolutionsTeaser />
+      <MarqueeStrip />
+      <HomeCtaStrip />
+      <Footer />
+      <Floaters />
+    </>
+  );
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<App />);
+  </script>
 </body>
 </html>
