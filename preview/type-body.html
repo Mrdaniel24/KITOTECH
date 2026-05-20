@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Type — Body & Labels</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .col { display: flex; flex-direction: column; gap: 10px; }
+  .tag { font: var(--mono-sm); color: var(--fg-on-light-3); text-transform: uppercase; letter-spacing: 0.16em; }
+  .body-lg { font: 400 18px/1.55 var(--font-body); }
+  .body { font: 400 15px/1.55 var(--font-body); }
+  .body-sm { font: 400 13px/1.5 var(--font-body); color: var(--fg-on-light-2); }
+  .eyebrow { font: 600 11px/1.4 var(--font-display); text-transform: uppercase; letter-spacing: 0.18em; color: var(--brand-red); }
+  .lab { font: 500 13px/1.2 var(--font-body); }
+</style>
+</head><body>
+  <div class="col">
+    <span class="tag">Body — Manrope</span>
+    <p class="body-lg">Built for facilities that can't go dark.</p>
+    <p class="body">AI alerting on 1,240 channels — under 80 ms. Audit trails for every door, every badge, every byte.</p>
+    <p class="body-sm">Secondary copy. Captions, footnotes, helper text below an input field.</p>
+  </div>
+  <div class="col">
+    <span class="tag">Labels & eyebrow</span>
+    <div class="eyebrow">Platform · Sentinel</div>
+    <div class="lab">Camera ID</div>
+    <div class="lab" style="color:var(--fg-on-light-3)">East entrance · channel 04</div>
+  </div>
+</body></html>

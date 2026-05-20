@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Cards</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .half { padding: 24px; }
+  .half.dark { background: var(--ink-1); }
+
+  .card { padding: 18px; border-radius: 8px; }
+  .card.light { background: var(--paper-0); border: 1px solid var(--hair-l); box-shadow: var(--shadow-1); }
+  .card.dark { background: var(--ink-2); border: 1px solid var(--hair-d); box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+
+  .eyebrow { font: 600 10px/1 var(--font-display); text-transform: uppercase; letter-spacing: 0.18em; color: var(--brand-red); margin-bottom: 12px; }
+  .title { font: 600 18px/1.25 var(--font-display); letter-spacing: -0.01em; margin-bottom: 6px; }
+  .desc { font: 400 13px/1.5 var(--font-body); color: var(--fg-on-light-2); }
+  .dark .desc { color: var(--fg-on-dark-2); }
+  .dark .title { color: var(--fg-on-dark-1); }
+  .meta { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--hair-l); font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-on-light-3); display: flex; justify-content: space-between; }
+  .dark .meta { border-color: var(--hair-d); color: var(--fg-on-dark-3); }
+</style>
+</head><body>
+  <div class="half">
+    <div class="card light">
+      <div class="eyebrow">Platform</div>
+      <div class="title">Sentinel — live monitoring</div>
+      <div class="desc">Unified video, access, and alert streams across every site you operate. Sub-100 ms event pipeline.</div>
+      <div class="meta"><span>v 4.2</span><span>Read more →</span></div>
+    </div>
+  </div>
+  <div class="half dark">
+    <div class="card dark">
+      <div class="eyebrow">Hardware</div>
+      <div class="title">Gate Vision — 4K turret</div>
+      <div class="desc">Night-rated 4K turret with on-device person/vehicle ML. Dual-stream over PoE+.</div>
+      <div class="meta"><span>KT-V4K-T2</span><span>Spec sheet →</span></div>
+    </div>
+  </div>
+</body></html>

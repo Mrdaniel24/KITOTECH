@@ -1,0 +1,52 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Buttons</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .side { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 0 24px; }
+  .side.dark { background: var(--ink-1); border-left: 1px solid var(--hair-l); margin: -28px -28px -28px 0; padding: 28px 28px 28px 24px; }
+  .h { font: var(--mono-sm); text-transform: uppercase; letter-spacing: 0.16em; color: var(--fg-on-light-3); margin-bottom: 2px; }
+  .dark .h { color: var(--fg-on-dark-3); }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px; border: 1px solid transparent; font: 500 14px/1 var(--font-body); cursor: pointer; transition: all 220ms cubic-bezier(0.22,1,0.36,1); }
+  .btn:active { transform: scale(0.98); transition-duration: 120ms; }
+
+  /* Primary (red) */
+  .btn.primary { background: var(--brand-red); color: #fff; border-color: var(--brand-red); }
+  .btn.primary:hover { background: var(--brand-red-hot); border-color: var(--brand-red-hot); box-shadow: 0 0 28px var(--brand-red-glow); }
+
+  /* Secondary on light = dark fill */
+  .btn.secondary { background: var(--fg-on-light-1); color: var(--paper-0); border-color: var(--fg-on-light-1); }
+  .btn.secondary:hover { background: #232328; border-color: #232328; }
+
+  /* Ghost on light */
+  .btn.ghost-l { background: transparent; color: var(--fg-on-light-1); border-color: var(--hair-l2); }
+  .btn.ghost-l:hover { background: var(--paper-2); }
+
+  /* Dark side */
+  .btn.primary-d { background: var(--brand-red); color: #fff; border-color: var(--brand-red); }
+  .btn.primary-d:hover { background: var(--brand-red-hot); }
+
+  .btn.secondary-d { background: var(--paper-0); color: var(--ink-1); border-color: var(--paper-0); }
+  .btn.secondary-d:hover { background: var(--paper-2); }
+
+  .btn.ghost-d { background: transparent; color: var(--fg-on-dark-1); border-color: var(--hair-d2); }
+  .btn.ghost-d:hover { background: var(--ink-2); }
+
+  .btn .arrow { display: inline-block; width: 14px; height: 1px; background: currentColor; position: relative; }
+  .btn .arrow::after { content: ""; position: absolute; right: -1px; top: -3px; width: 7px; height: 7px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+</style>
+</head><body>
+  <div class="side">
+    <div class="h">On light</div>
+    <button class="btn primary">Request demo <span class="arrow"></span></button>
+    <button class="btn secondary">View products</button>
+    <button class="btn ghost-l">Contact sales</button>
+  </div>
+  <div class="side dark">
+    <div class="h">On dark</div>
+    <button class="btn primary-d">Request demo <span class="arrow"></span></button>
+    <button class="btn secondary-d">View products</button>
+    <button class="btn ghost-d">Contact sales</button>
+  </div>
+</body></html>

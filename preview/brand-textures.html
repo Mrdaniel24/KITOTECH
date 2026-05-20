@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Brand — Backgrounds</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .tile { position: relative; height: 200px; display: grid; place-items: end start; padding: 14px; }
+  .tile .lab { font: 500 11px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; color: #fff; background: rgba(5,5,7,0.6); padding: 4px 8px; border-radius: 2px; backdrop-filter: blur(8px); }
+  .grid {
+    background-color: var(--ink-1);
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .dots {
+    background-color: var(--ink-1);
+    background-image: radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .scan {
+    background-color: var(--ink-0);
+    background-image:
+      radial-gradient(ellipse at 50% 30%, rgba(230,14,27,0.25), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px);
+  }
+</style>
+</head><body>
+  <div class="tile grid"><span class="lab">48 px grid · hero</span></div>
+  <div class="tile dots"><span class="lab">20 px dot · abstract fill</span></div>
+  <div class="tile scan"><span class="lab">Scanline · alert</span></div>
+</body></html>

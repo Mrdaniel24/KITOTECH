@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start *)",
+      "Bash(python -m http.server 3000)",
+      "Bash(taskkill /F /IM python.exe)",
+      "PowerShell(netstat *)",
+      "PowerShell(Stop-Process *)",
+      "PowerShell(Start-Sleep -Seconds 2; Start-Process \"http://localhost:3000/ui_kits/marketing/index.html\")",
+      "PowerShell(New-Item *)",
+      "PowerShell(Start-Process \"http://localhost:3000/ui_kits/marketing/products.html\"; Start-Sleep -Milliseconds 500; Start-Process \"http://localhost:3000/ui_kits/marketing/solutions.html\"; Start-Sleep -Milliseconds 500; Start-Process \"http://localhost:3000/ui_kits/marketing/about.html\"; Start-Sleep -Milliseconds 500; Start-Process \"http://localhost:3000/ui_kits/marketing/contact.html\")",
+      "PowerShell(Start-Process \"http://localhost:3000/ui_kits/marketing/index.html\")",
+      "PowerShell(Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds; $bmp = New-Object System.Drawing.Bitmap\\($screen.Width, $screen.Height\\); $g = [System.Drawing.Graphics]::FromImage\\($bmp\\); $g.CopyFromScreen\\($screen.Location, [System.Drawing.Point]::Empty, $screen.Size\\); $bmp.Save\\(\"C:\\\\project\\\\Kitotech Design System\\\\scraps\\\\screenshot.png\"\\); $g.Dispose\\(\\); $bmp.Dispose\\(\\); Write-Output \"done\")",
+      "PowerShell(Start-Process \"http://localhost:3000/ui_kits/marketing/index.html\"; Start-Sleep -Seconds 4; Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing; $screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds; $bmp = New-Object System.Drawing.Bitmap\\($screen.Width, $screen.Height\\); $g = [System.Drawing.Graphics]::FromImage\\($bmp\\); $g.CopyFromScreen\\($screen.Location, [System.Drawing.Point]::Empty, $screen.Size\\); $bmp.Save\\(\"C:\\\\project\\\\Kitotech Design System\\\\scraps\\\\screenshot.png\"\\); $g.Dispose\\(\\); $bmp.Dispose\\(\\); Write-Output \"done\")",
+      "Read(//c/Users/DAZZY GRAPHICS/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"enterprise security surveillance SaaS dark cinematic technical premium corporate\" --design-system -p \"Kitotech Group LTD\" -f markdown)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(Start-Process \"http://localhost:3000/ui_kits/marketing/about.html\")",
+      "PowerShell(Start-Process \"http://localhost:3000/ui_kits/marketing/solutions.html\")",
+      "PowerShell(Rename-Item *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Initial commit — Kitotech Design System full marketing site *)"
+    ]
+  }
+}

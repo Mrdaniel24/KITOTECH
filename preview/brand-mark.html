@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Brand — K Mark</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
+  .half { display: grid; place-items: center; padding: 36px 24px; gap: 12px; min-height: 220px; }
+  .half.dark { background: var(--ink-0); }
+  .half.light { background: var(--paper-1); }
+  .half img { height: 130px; width: auto; }
+  .lab { font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; }
+  .dark .lab { color: var(--fg-on-dark-3); }
+  .light .lab { color: var(--fg-on-light-3); }
+</style>
+</head><body>
+  <div class="half light">
+    <img src="../assets/logo-mark.png" alt="Kitotech K mark">
+    <div class="lab">Primary · red on light</div>
+  </div>
+  <div class="half dark">
+    <img src="../assets/logo-mark-white.png" alt="Kitotech K mark white">
+    <div class="lab">Inverted · white on ink</div>
+  </div>
+</body></html>

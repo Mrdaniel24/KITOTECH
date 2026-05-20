@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Signal Red</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 24px 28px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .sw { display: flex; flex-direction: column; gap: 8px; }
+  .chip { height: 96px; border-radius: 8px; border: 1px solid var(--hair-l); position: relative; overflow: hidden; }
+  .chip.glow::after { content: ""; position: absolute; inset: 0; box-shadow: 0 0 32px var(--brand-red-glow) inset; }
+  .lab { font: 500 11px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-on-light-2); }
+  .hex { font: 500 12px/1.2 var(--font-mono); color: var(--fg-on-light-1); }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background:var(--brand-red)"></div><div class="lab">Signal · default</div><div class="hex">#E1141C</div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-red-hot)"></div><div class="lab">Hot · hover</div><div class="hex">#FF2733</div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-red-deep)"></div><div class="lab">Deep · pressed</div><div class="hex">#A30E14</div></div>
+    <div class="sw"><div class="chip glow" style="background:var(--ink-1)"></div><div class="lab">Glow · focus</div><div class="hex">rgba(.35)</div></div>
+    <div class="sw"><div class="chip" style="background:var(--brand-red-tint)"></div><div class="lab">Tint · bg</div><div class="hex">rgba(.08)</div></div>
+  </div>
+</body></html>

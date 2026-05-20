@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Status & badges</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 24px 28px; background: var(--ink-1); display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .h { font: var(--mono-sm); text-transform: uppercase; letter-spacing: 0.16em; color: var(--fg-on-dark-3); }
+
+  .live { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border-radius: 999px; background: rgba(230,14,27,0.1); border: 1px solid rgba(230,14,27,0.4); font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; color: var(--brand-red); }
+  .live .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--brand-red); box-shadow: 0 0 10px var(--brand-red); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: 0.45; transform: scale(0.85);} }
+
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border-radius: 999px; background: var(--ink-2); border: 1px solid var(--hair-d); font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.14em; color: var(--fg-on-dark-1); }
+  .pill .dot { width: 6px; height: 6px; border-radius: 999px; }
+
+  .badge { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 2px; font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
+  .badge.new { background: var(--brand-red); color: #fff; }
+  .badge.beta { background: var(--ink-2); color: var(--fg-on-dark-1); border: 1px solid var(--hair-d2); }
+  .badge.pro { background: var(--paper-0); color: var(--ink-1); }
+
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--ink-2); border: 1px solid var(--hair-d); font: 500 12px/1 var(--font-body); color: var(--fg-on-dark-1); }
+  .chip.active { background: var(--brand-red); border-color: var(--brand-red); color: #fff; }
+</style>
+</head><body>
+  <div class="row"><span class="h">Status</span></div>
+  <div class="row">
+    <div class="live"><span class="dot"></span>Live</div>
+    <div class="pill"><span class="dot" style="background:var(--status-online)"></span>Online</div>
+    <div class="pill"><span class="dot" style="background:var(--status-warn)"></span>Warning</div>
+    <div class="pill" style="border-color:var(--brand-red); color:var(--brand-red)"><span class="dot" style="background:var(--brand-red)"></span>Alert</div>
+    <div class="pill"><span class="dot" style="background:var(--status-offline)"></span>Offline</div>
+  </div>
+  <div class="row"><span class="h">Badges & filters</span></div>
+  <div class="row">
+    <span class="badge new">New</span>
+    <span class="badge beta">Beta</span>
+    <span class="badge pro">Pro</span>
+    <span class="chip active">All channels</span>
+    <span class="chip">Indoor</span>
+    <span class="chip">Outdoor</span>
+    <span class="chip">Doors</span>
+  </div>
+</body></html>

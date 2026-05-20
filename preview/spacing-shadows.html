@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Spacing — Shadow / Elevation</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 32px 28px; background: var(--paper-2); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .sw { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .box { width: 110px; height: 70px; background: var(--paper-0); border-radius: 8px; border: 1px solid var(--hair-l); }
+  .box.s1 { box-shadow: var(--shadow-1); }
+  .box.s2 { box-shadow: var(--shadow-2); }
+  .box.s3 { box-shadow: var(--shadow-3); }
+  .box.s4 { box-shadow: var(--shadow-4); }
+  .tok { font: 500 11px/1.2 var(--font-mono); color: var(--fg-on-light-1); }
+  .lab { font: 500 11px/1 var(--font-mono); color: var(--fg-on-light-3); text-transform: uppercase; letter-spacing: 0.12em; }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="sw"><div class="box s1"></div><div class="tok">shadow-1</div><div class="lab">Hairline</div></div>
+    <div class="sw"><div class="box s2"></div><div class="tok">shadow-2</div><div class="lab">Card hover</div></div>
+    <div class="sw"><div class="box s3"></div><div class="tok">shadow-3</div><div class="lab">Popover</div></div>
+    <div class="sw"><div class="box s4"></div><div class="tok">shadow-4</div><div class="lab">Modal</div></div>
+  </div>
+</body></html>

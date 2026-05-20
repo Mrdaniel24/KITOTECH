@@ -1,0 +1,21 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Status / Semantic</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  body { padding: 24px 28px; background: var(--ink-1); }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .sw { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 8px; border-radius: 999px; border: 1px solid var(--hair-d); background: var(--ink-2); font: 500 11px/1 var(--font-mono); text-transform: uppercase; letter-spacing: 0.12em; color: var(--fg-on-dark-1); }
+  .dot { width: 8px; height: 8px; border-radius: 999px; }
+  .lab { font: 500 11px/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-on-dark-2); }
+  .hex { font: 500 11px/1 var(--font-mono); color: var(--fg-on-dark-3); }
+</style>
+</head><body>
+  <div class="grid">
+    <div class="sw"><div class="pill"><span class="dot" style="background:var(--status-online)"></span>Online</div><div class="lab">success</div><div class="hex">#1DBB6A</div></div>
+    <div class="sw"><div class="pill"><span class="dot" style="background:var(--status-warn)"></span>Warning</div><div class="lab">warn</div><div class="hex">#F5A623</div></div>
+    <div class="sw"><div class="pill" style="border-color:var(--brand-red); color:var(--brand-red)"><span class="dot" style="background:var(--brand-red); box-shadow:0 0 12px var(--brand-red-glow)"></span>Alert</div><div class="lab">alert</div><div class="hex">#E60E1B</div></div>
+    <div class="sw"><div class="pill"><span class="dot" style="background:var(--status-info)"></span>Info</div><div class="lab">info</div><div class="hex">#3D8EFF</div></div>
+    <div class="sw"><div class="pill"><span class="dot" style="background:var(--status-offline)"></span>Offline</div><div class="lab">muted</div><div class="hex">#6F6F76</div></div>
+  </div>
+</body></html>

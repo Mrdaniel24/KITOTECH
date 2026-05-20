@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kuhusu Kitotech - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="../../assets/logo-mark.png">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="about.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel" src="Nav.jsx"></script>
+  <script type="text/babel" src="Footer.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx"></script>
+
+  <script type="text/babel">
+  const milestones = [
+    { year:'2011', event:'Kitotech ilianzishwa Lagos, Nigeria - kwa timu ya wahandisi 4.' },
+    { year:'2014', event:'Tukapata utambuzi wa kwanza wa Hikvision - wakala aliyeidhinishwa.' },
+    { year:'2017', event:'Tulipanua hadi Nairobi, Kenya - ofisi ya kwanza Afrika Mashariki.' },
+    { year:'2019', event:'Tulipita vituo 500 vilivyosanikishwa - hospitali, hoteli, na viwanda.' },
+    { year:'2022', event:'Tukazindua jukwaa la Sentinel - dashibodi yetu ya mendeshaji.' },
+    { year:'2024', event:'Tulifikia nchi 6: Nigeria, Kenya, Tanzania, Uganda, Ghana, UAE.' },
+    { year:'2026', event:'Zaidi ya vituo 1,200 vya kamera. Tunakua.' },
+  ];
+
+  const values = [
+    { icon:'shield-check', title:'Uaminifu', body:'Hatuweki mkono sahihi kama suluhisho halitatoa matokeo. Kila mradi una dhamana ya miaka 2.' },
+    { icon:'zap', title:'Kasi', body:'Tatizo lolote la mfumo linajibiwa ndani ya masaa 4. Usakinishaji wa kawaida unakamilika ndani ya siku 3.' },
+    { icon:'users', title:'Utaalamu', body:'Wahandisi wetu wote wana vyeti vya Hikvision. Tunaendelea kujisomea ili kukupa teknolojia ya kisasa.' },
+  ];
+
+  const AboutPage = () => (
+    <>
+      <Nav />
+
+      {/* Hero */}
+      <section className="page-hero about-hero">
+        <div className="page-hero-bg" style={{backgroundImage:"url('../../assets/images/about-hero.jpg')"}} />
+        <div className="page-hero-overlay" />
+        <div className="container page-hero-content">
+          <div className="eyebrow-row"><span className="eyebrow">KUHUSU SISI</span></div>
+          <h1>Tunajenga miundombinu ya usalama <span className="accent">inayodumu.</span></h1>
+          <p>Kuanzia 2011, Kitotech imekuwa ikisaidia biashara, hospitali, hoteli, na taasisi za serikali katika Afrika kujenga mifumo ya usalama inayotegemeka.</p>
+        </div>
+        <div className="page-hero-wedge" />
+      </section>
+
+      {/* Mission */}
+      <section className="about-mission">
+        <div className="container about-mission-inner">
+          <div className="about-mission-copy">
+            <span className="eyebrow">DHAMIRA YETU</span>
+            <h2>Usalama si anasa - ni haki ya kila biashara.</h2>
+            <p>Tulianzishwa kwa imani moja rahisi: kila biashara, iwe ndogo au kubwa, inastahili mfumo wa usalama unaofanya kazi kweli kweli.</p>
+            <p>Tunasanidi, tunafunga, tunafuatilia, na tunashughulikia matengenezo. Mwisho wa siku, wewe unaweza kufanya kazi yako huku ukijua kwamba usalama uko mikononi pa wataalamu.</p>
+            <a href="contact.html" className="btn btn-primary btn-skew" style={{marginTop:24}}>
+              Fanya Kazi Nasi <Icon name="arrow" size={14} />
+            </a>
+          </div>
+          <div className="about-mission-img">
+            <div className="about-img-slot" style={{backgroundImage:"url('../../assets/images/about-mission.jpg')"}}>
+              <div className="about-img-fallback"><Icon name="building-2" size={48} /></div>
+            </div>
+            <div className="about-img-badge">
+              <span className="about-img-badge-num">15+</span>
+              <span className="about-img-badge-label">Miaka ya uzoefu</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="about-values">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">THAMANI ZETU</span>
+            <h2>Tunachokiamini.</h2>
+          </div>
+          <div className="values-grid">
+            {values.map((v, i) => (
+              <div className="value-card" key={i}>
+                <div className="value-icon"><Icon name={v.icon} size={28} /></div>
+                <h3>{v.title}</h3>
+                <p>{v.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hikvision Partnership */}
+      <section className="hik-partnership">
+        <div className="hik-partnership-bg" style={{backgroundImage:"url('../../assets/images/about.jpg')"}} />
+        <div className="hik-partnership-overlay" />
+        <div className="container hik-partnership-inner">
+          <div className="hik-cert">
+            <div className="hik-cert-top">
+              <img src="../../assets/logo-mark-white.png" alt="Kitotech" className="hik-cert-logo" />
+              <div className="hik-cert-divider" />
+              <div>
+                <div className="hik-cert-title">WAKALA ALIYEIDHINISHWA RASMI</div>
+                <div className="hik-cert-sub">Hikvision &middot; Afrika Mashariki &amp; Nigeria</div>
+              </div>
+            </div>
+            <p className="hik-cert-body">
+              Hikvision ni mtengenezaji mkubwa zaidi wa mifumo ya usalama duniani - inashikilia asilimia 24 ya soko la CCTV.
+              Kitotech ni moja ya wakala wachache walioruhusiwa kuuza, kusanidi, na kutoa huduma za Hikvision katika eneo letu.
+              Hii inamaanisha unapata bidhaa za asili, dhamana kamili, na msaada wa kitaalamu.
+            </p>
+            <div className="hik-cert-stats">
+              <div><span className="hik-stat-val">150+</span><span className="hik-stat-label">Nchi</span></div>
+              <div><span className="hik-stat-val">#1</span><span className="hik-stat-label">Duniani</span></div>
+              <div><span className="hik-stat-val">40M+</span><span className="hik-stat-label">Kamera/Mwaka</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="about-timeline">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">HISTORIA YETU</span>
+            <h2>Safari ya miaka 15.</h2>
+          </div>
+          <div className="timeline">
+            {milestones.map((m, i) => (
+              <div className="timeline-item" key={i}>
+                <div className="timeline-year">{m.year}</div>
+                <div className="timeline-dot" />
+                <div className="timeline-body">{m.event}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="cta-strip">
+        <div className="cta-strip-wedge" />
+        <div className="container cta-strip-inner">
+          <div>
+            <div className="eyebrow" style={{color:'rgba(255,255,255,0.7)'}}>FANYA HATUA</div>
+            <h2>Anza safari yako ya usalama nasi.</h2>
+          </div>
+          <a href="contact.html" className="btn btn-ghost btn-skew">
+            Wasiliana Nasi <Icon name="arrow" size={14} />
+          </a>
+        </div>
+      </section>
+
+      <Footer />
+      <Floaters />
+    </>
+  );
+
+  const root = ReactDOM.createRoot(document.getElementById('app'));
+  root.render(<AboutPage />);
+  </script>
+</body>
+</html>
