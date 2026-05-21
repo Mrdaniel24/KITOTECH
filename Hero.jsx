@@ -96,7 +96,7 @@
           {/* Vitufe vya vitendo */}
           <div className="hero-actions">
             <a href="contact.html" className="btn btn-primary btn-skew">
-              Omba Onyesho <Icon name="arrow" size={14}/>
+              Wasiliana Nasi <Icon name="arrow" size={14}/>
             </a>
             <a href="products.html" className="btn btn-outline-light btn-skew">
               Angalia Bidhaa <Icon name="arrow" size={14}/>

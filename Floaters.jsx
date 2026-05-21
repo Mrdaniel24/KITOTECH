@@ -22,15 +22,22 @@ const AIPanel = ({ onClose }) => {
     { from: 'bot', text: "Habari! Mimi ni Sentinel, msaidizi wa Kitotech. Naweza kukusaidia kuchagua kamera, kulinganisha mipango, au kupata bei. Ungependa kuanzia wapi?" },
   ]);
   const [input, setInput] = React.useState('');
-  const suggestions = ['Kamera 32 kwa eneo moja', 'Linganisha mipango', 'Omba onyesho', 'Bei ya milango 200'];
-  const send = (text) => {
+  const [sending, setSending] = React.useState(false);
+  const suggestions = ['Kamera 32 kwa eneo moja', 'Linganisha mipango', 'Angalia bei', 'Bei ya milango 200'];
+  const send = async (text) => {
     const userMsg = (text ?? input).trim();
-    if (!userMsg) return;
+    if (!userMsg || sending) return;
     setMsgs(m => [...m, { from: 'user', text: userMsg }]);
     setInput('');
-    setTimeout(() => {
-      setMsgs(m => [...m, { from: 'bot', text: 'Nimepokea. Mhandisi wetu atakuwasiliana kupitia WhatsApp ndani ya dakika 10.' }]);
-    }, 700);
+    setSending(true);
+    try {
+      const data = await KitotechApi.sendAiMessage(userMsg);
+      setMsgs(m => [...m, { from: 'bot', text: data.response }]);
+    } catch (err) {
+      setMsgs(m => [...m, { from: 'bot', text: 'Nimepokea ujumbe wako, lakini muunganisho wa backend haujapatikana sasa. Tafadhali jaribu tena baada ya muda mfupi.' }]);
+    } finally {
+      setSending(false);
+    }
   };
   return (
     <div className="ai-panel" onClick={e => e.stopPropagation()}>
@@ -57,7 +64,7 @@ const AIPanel = ({ onClose }) => {
           onKeyDown={e => e.key === 'Enter' && send()}
           placeholder="Uliza kuhusu bidhaa, bei, ujumbe..."
         />
-        <button onClick={() => send()}>Tuma</button>
+        <button onClick={() => send()}>{sending ? '...' : 'Tuma'}</button>
       </div>
     </div>
   );

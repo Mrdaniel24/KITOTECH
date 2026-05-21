@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="Api.js?v=backend1"></script>
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel">
+  const AdminLogin = () => {
+    const [form, setForm] = React.useState({ email:'admin@kitotech.local', password:'Kitotech@2026' });
+    const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState('');
+
+    React.useEffect(() => {
+      if (KitotechApi.hasAdminToken()) window.location.href = 'admin-dashboard.html';
+    }, []);
+
+    const submit = async (e) => {
+      e.preventDefault();
+      setError('');
+      setLoading(true);
+      try {
+        await KitotechApi.login(form.email, form.password);
+        window.location.href = 'admin-dashboard.html';
+      } catch (err) {
+        setError(err.message || 'Login imeshindikana.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    return (
+      <main className="login-page">
+        <section className="login-visual">
+          <div className="login-visual-inner">
+            <img src="./assets/logo-mark-white.png" alt="Kitotech" />
+            <div className="admin-kicker">KITOTECH ADMIN</div>
+            <h1>Control center ya website.</h1>
+            <p>Simamia products, services, customer inquiries, service requests, na AI conversations kutoka sehemu moja.</p>
+          </div>
+        </section>
+
+        <section className="login-card">
+          <h2>Admin Login</h2>
+          <p className="lede">Ingia kwa kutumia akaunti ya admin ya Kitotech.</p>
+          <form className="login-form" onSubmit={submit}>
+            <label>
+              Email
+              <input value={form.email} onChange={e => setForm({...form, email:e.target.value})} type="email" required />
+            </label>
+            <label>
+              Password
+              <input value={form.password} onChange={e => setForm({...form, password:e.target.value})} type="password" required />
+            </label>
+            {error && <p className="admin-error">{error}</p>}
+            <button className="btn btn-primary btn-skew" type="submit" disabled={loading}>
+              {loading ? 'Inaingia...' : 'Ingia'} <Icon name="arrow" size={14} />
+            </button>
+          </form>
+        </section>
+      </main>
+    );
+  };
+
+  ReactDOM.createRoot(document.getElementById('app')).render(<AdminLogin />);
+  </script>
+</body>
+</html>

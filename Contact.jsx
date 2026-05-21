@@ -1,16 +1,38 @@
-// Contact section — form + info + map
+﻿// Contact section â€” form + info + map
 const Contact = () => {
   const [form, setForm] = React.useState({ jina:'', barua:'', simu:'', mada:'', ujumbe:'' });
   const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [error, setError] = React.useState('');
   const onChange = (k) => (e) => setForm({ ...form, [k]: e.target.value });
-  const onSubmit = (e) => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 3000); };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSending(true);
+    try {
+      await KitotechApi.sendContact({
+        name: form.jina,
+        email: form.barua || null,
+        phone: form.simu || null,
+        subject: form.mada || 'Website inquiry',
+        message: form.ujumbe,
+      });
+      setSent(true);
+      setForm({ jina:'', barua:'', simu:'', mada:'', ujumbe:'' });
+      setTimeout(() => setSent(false), 3000);
+    } catch (err) {
+      setError(err.message || 'Ujumbe haujatumwa. Hakikisha backend ipo wazi.');
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section className="contact">
       <div className="container">
         <h2>USIPOTEZE MUDA, ONGEA SASA NA<br/><span className="accent">WATAALAMU WETU WA ZAMU!</span></h2>
         <p className="lede">
-          Ili kuongea nasi ni rahisi — jaza fomu hii na mmoja wa wataalamu wetu
+          Ili kuongea nasi ni rahisi â€” jaza fomu hii na mmoja wa wataalamu wetu
           atakuwasiliana hivi karibuni. Au tumia mawasiliano yaliyo upande.
         </p>
 
@@ -36,8 +58,9 @@ const Contact = () => {
               <label>Ujumbe:</label>
               <textarea className="field" value={form.ujumbe} onChange={onChange('ujumbe')} placeholder="Andika ujumbe wako hapa..."/>
             </div>
+            {error && <p style={{color:'var(--brand-red)', font:'500 12px/1.5 var(--font-body)', margin:0}}>{error}</p>}
             <button type="submit" className="btn btn-primary btn-skew submit-btn">
-              {sent ? 'IMETUMWA ✓' : 'TUMA'} <Icon name="send" size={14}/>
+              {sending ? 'INATUMA...' : sent ? 'IMETUMWA' : 'TUMA'} <Icon name="send" size={14}/>
             </button>
           </form>
 
@@ -53,7 +76,7 @@ const Contact = () => {
               <h4>TULIPO</h4>
               <div className="item">
                 <span className="ic"><Icon name="map" size={16}/></span>
-                <span>Plot 12, Allen Avenue<br/>Ikeja, Lagos<br/>Nigeria · 100271</span>
+                <span>Plot 12, Allen Avenue<br/>Ikeja, Lagos<br/>Nigeria Â· 100271</span>
               </div>
               <div className="map">
                 <div className="pin"></div>

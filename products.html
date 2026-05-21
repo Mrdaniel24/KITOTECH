@@ -16,9 +16,10 @@
   <div id="app"></div>
 
   <script type="text/babel" src="Icon.jsx"></script>
+  <script src="Api.js?v=backend1"></script>
   <script type="text/babel" src="Nav.jsx"></script>
   <script type="text/babel" src="Footer.jsx"></script>
-  <script type="text/babel" src="Floaters.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx?v=backend1"></script>
 
   <script type="text/babel">
   const categories = [
@@ -55,9 +56,43 @@
     ],
   };
 
+  const apiCategoryMap = {
+    'security-cameras': 'cam',
+    'access-control': 'access',
+    'video-storage': 'nvr',
+    'ai-monitoring': 'ai',
+  };
+
+  const normalizeProduct = (product) => {
+    const categorySlug = product.category && product.category.slug;
+    const categoryId = apiCategoryMap[categorySlug] || 'cam';
+    const specs = Array.isArray(product.specifications) ? product.specifications : [];
+    const imagePath = product.image_path || 'assets/images/product-cam.jpg';
+
+    return {
+      categoryId,
+      code: product.model || ('KT-' + product.id),
+      name: product.name,
+      specs: specs.length ? specs : ['Kitotech verified', 'Installation support', 'Warranty available'],
+      imgUrl: imagePath.startsWith('http') ? imagePath : './' + imagePath,
+    };
+  };
+
   const ProductsPage = () => {
     const [active, setActive] = React.useState('cam');
-    const list = products[active];
+    const [apiProducts, setApiProducts] = React.useState(null);
+    React.useEffect(() => {
+      KitotechApi.getProducts()
+        .then(items => {
+          const grouped = { cam: [], access: [], nvr: [], ai: [] };
+          items.map(normalizeProduct).forEach(product => grouped[product.categoryId].push(product));
+          setApiProducts(grouped);
+        })
+        .catch(() => setApiProducts(null));
+    }, []);
+    const list = apiProducts && apiProducts[active] && apiProducts[active].length
+      ? apiProducts[active]
+      : products[active];
 
     return (
       <>
@@ -100,7 +135,7 @@
             <div className="products-grid">
               {list.map(p => (
                 <div className="prod-card" key={p.code}>
-                  <div className="prod-img" style={{backgroundImage: 'url("./assets/images/' + p.img + '.jpg")'}}>
+                  <div className="prod-img" style={{backgroundImage: p.imgUrl ? 'url("' + p.imgUrl + '")' : 'url("./assets/images/' + p.img + '.jpg")'}}>
                     <div className="prod-img-fallback">
                       <Icon name="camera" size={32} />
                     </div>

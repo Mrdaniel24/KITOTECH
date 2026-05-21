@@ -22,7 +22,7 @@ const AIPanel = ({ onClose }) => {
     { from: 'bot', text: "Habari! Mimi ni Sentinel, msaidizi wa Kitotech. Naweza kukusaidia kuchagua kamera, kulinganisha mipango, au kupata bei. Ungependa kuanzia wapi?" },
   ]);
   const [input, setInput] = React.useState('');
-  const suggestions = ['Kamera 32 kwa eneo moja', 'Linganisha mipango', 'Omba onyesho', 'Bei ya milango 200'];
+  const suggestions = ['Kamera 32 kwa eneo moja', 'Linganisha mipango', 'Angalia bei', 'Bei ya milango 200'];
   const send = (text) => {
     const userMsg = (text ?? input).trim();
     if (!userMsg) return;

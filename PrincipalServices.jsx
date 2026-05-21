@@ -22,12 +22,28 @@
     return () => obs.disconnect();
   }, []);
 
-  const services = [
+  const fallbackServices = [
     { img:'product-cam',  title:'Kamera za Usalama',  desc:'4K · ColorVu · AI · IR 60m. Picha ya rangi usiku na mchana bila kuacha.' },
     { img:'product-door', title:'Udhibiti wa Milango', desc:'Vitambulisho vya uso, kadi, na QR — ufikiaji unaosimamiwa kwa usahihi.' },
     { img:'product-ai',   title:'AI na Tahadhari',    desc:'Tahadhari ndani ya ms 80. Utambuzi wa magari, watu, na mienendo isiyo ya kawaida.' },
     { img:'product-nvr',  title:'Usimamizi wa Picha', desc:'NVR/DVR za hadi chaneli 256. Uhifadhi wa muda mrefu, cloud, na ufikiaji wa mbali.' },
   ];
+  const [services, setServices] = React.useState(fallbackServices);
+
+  React.useEffect(() => {
+    KitotechApi.getServices()
+      .then(items => {
+        if (!items.length) return;
+        const mapped = items.slice(0, 4).map((service, i) => ({
+          title: service.name,
+          desc: service.description || fallbackServices[i % fallbackServices.length].desc,
+          imgUrl: service.image_path ? './' + service.image_path : null,
+          img: fallbackServices[i % fallbackServices.length].img,
+        }));
+        setServices([...mapped, ...fallbackServices.slice(mapped.length)]);
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section className="principal-services">
@@ -41,7 +57,7 @@
           {services.map((s, i) => (
             <a href="products.html" className="ps-card" key={i} style={{'--delay': `${i * 0.1}s`}}>
               <div className="ps-media">
-                <div className="ps-media-img" style={{backgroundImage:`url('./assets/images/${s.img}.jpg')`}}/>
+                <div className="ps-media-img" style={{backgroundImage:s.imgUrl ? `url('${s.imgUrl}')` : `url('./assets/images/${s.img}.jpg')`}}/>
                 <div className="ps-media-fallback"><Icon name="camera" size={32}/></div>
                 <div className="ps-media-overlay"/>
               </div>

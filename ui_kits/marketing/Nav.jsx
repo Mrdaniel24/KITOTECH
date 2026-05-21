@@ -30,7 +30,7 @@ const Nav = () => {
             <a href="solutions.html"className={page === 'solutions.html'? 'active' : ''}>SULUHISHO</a>
             <a href="contact.html"  className={page === 'contact.html'  ? 'active' : ''}>WASILIANA</a>
           </nav>
-          <a href="contact.html" className="btn btn-primary btn-skew">Omba Onyesho <Icon name="arrow" size={14}/></a>
+          <a href="admin-login.html" className="btn btn-primary btn-skew">Ingia <Icon name="arrow" size={14}/></a>
         </div>
       </div>
     </div>

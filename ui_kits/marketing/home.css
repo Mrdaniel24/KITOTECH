@@ -675,11 +675,17 @@
 .ps-card:hover { background: #f8f8f8; }
 .ps-card:hover .ps-media-img { transform: scale(1.04); }
 
-.ps-media { aspect-ratio: 4/3; position: relative; overflow: hidden; }
+.ps-media {
+  aspect-ratio: 4/3;
+  position: relative;
+  overflow: hidden;
+  background: #e8e8e8;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
 .ps-media-img {
   position: absolute; inset: 0;
-  background-color: #111;
-  background-size: cover;
+  background-color: #e8e8e8;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);

@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard - Kitotech Group LTD</title>
+  <link rel="icon" type="image/png" href="./assets/logo-mark.png">
+  <link rel="stylesheet" href="./colors_and_type.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="Api.js?v=backend2"></script>
+  <script type="text/babel" src="Icon.jsx"></script>
+  <script type="text/babel">
+
+  const emptyDashboard = {
+    totals: { products:0, services:0, service_requests:0, contact_inquiries:0, ai_conversations:0 },
+    recent: { service_requests:[], contact_inquiries:[] },
+  };
+
+  const emptyProductForm = {
+    name: '', category_id: '', short_description: '',
+    full_description: '', price: '', discount_price: '',
+    status: 'draft', is_featured: false,
+  };
+
+  // ─── Shared Components ───────────────────────────────────────
+  const Panel = ({ title, children, action }) => (
+    <section className="admin-panel">
+      <div className="admin-panel-head">
+        <h2>{title}</h2>
+        {action}
+      </div>
+      <div className="admin-panel-body">{children}</div>
+    </section>
+  );
+
+  const List = ({ items, render, empty }) => (
+    <div className="admin-list">
+      {items.length
+        ? items.map(item => <React.Fragment key={item.id}>{render(item)}</React.Fragment>)
+        : <div className="admin-item"><div className="admin-item-meta">{empty}</div></div>}
+    </div>
+  );
+
+  // ─── Admin Dashboard ─────────────────────────────────────────
+  const AdminDashboard = () => {
+
+    // ══ Dashboard State ══════════════════════════════════════
+    const [dashboard, setDashboard]   = React.useState(emptyDashboard);
+    const [contacts, setContacts]     = React.useState([]);
+    const [ai, setAi]                 = React.useState([]);
+    const [requests, setRequests]     = React.useState([]);
+    const [active, setActive]         = React.useState('overview');
+    const [loading, setLoading]       = React.useState(true);
+    const [error, setError]           = React.useState('');
+
+    // ══ Products State ════════════════════════════════════════
+    const [products, setProducts]     = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
+    const [productView, setProductView] = React.useState('list');
+    const [editProduct, setEditProduct] = React.useState(null);
+    const [prodSearch, setProdSearch] = React.useState('');
+    const [prodCat, setProdCat]       = React.useState('');
+    const [prodStatus, setProdStatus] = React.useState('');
+    const [prodLoading, setProdLoading] = React.useState(false);
+    const [prodError, setProdError]   = React.useState('');
+    const [prodSuccess, setProdSuccess] = React.useState('');
+    const [deleteTarget, setDeleteTarget] = React.useState(null);
+
+    // ══ Form State ════════════════════════════════════════════
+    const [form, setForm]                   = React.useState(emptyProductForm);
+    const [mainImgFile, setMainImgFile]     = React.useState(null);
+    const [mainImgPreview, setMainImgPreview] = React.useState('');
+    const [galleryFiles, setGalleryFiles]   = React.useState([]);
+    const [galleryPreviews, setGalleryPreviews] = React.useState([]);
+    const [existingGallery, setExistingGallery] = React.useState([]);
+    const [colours, setColours]             = React.useState([]);
+    const [colourForm, setColourForm]       = React.useState({ colour_name:'', colour_code:'#1a1a1a', status:'available' });
+    const [formSaving, setFormSaving]       = React.useState(false);
+    const [formError, setFormError]         = React.useState('');
+
+    const mainImgRef    = React.useRef();
+    const galleryImgRef = React.useRef();
+
+    // Computed
+    const discountPct = (form.price && form.discount_price && +form.price > 0)
+      ? Math.max(0, Math.round((1 - +form.discount_price / +form.price) * 100))
+      : null;
+    const storageBase = KitotechApi.storageUrl();
+    const filteredProducts = products.filter(p =>
+      (!prodSearch || (p.name || '').toLowerCase().includes(prodSearch.toLowerCase())) &&
+      (!prodCat    || String(p.category_id) === String(prodCat)) &&
+      (!prodStatus || p.status === prodStatus)
+    );
+
+    // ══ Dashboard Load ════════════════════════════════════════
+    const load = async () => {
+      if (!KitotechApi.hasAdminToken()) { window.location.href = 'admin-login.html'; return; }
+      setLoading(true); setError('');
+      try {
+        const [dash, contactList, aiList, requestList] = await Promise.all([
+          KitotechApi.getAdminDashboard(),
+          KitotechApi.getContactInquiries(),
+          KitotechApi.getAiConversations(),
+          KitotechApi.getServiceRequests(),
+        ]);
+        setDashboard(dash); setContacts(contactList); setAi(aiList); setRequests(requestList);
+      } catch (err) {
+        setError(err.message || 'Dashboard haijapakia.');
+        if ((err.message || '').toLowerCase().includes('token')) {
+          KitotechApi.clearToken(); window.location.href = 'admin-login.html';
+        }
+      } finally { setLoading(false); }
+    };
+
+    // ══ Products Load ═════════════════════════════════════════
+    const loadProducts = async () => {
+      setProdLoading(true); setProdError('');
+      try {
+        const data = await KitotechApi.getAdminProducts();
+        setProducts(Array.isArray(data) ? data : (data.data || []));
+      } catch (e) { setProdError(e.message); }
+      finally { setProdLoading(false); }
+    };
+
+    const loadCategories = async () => {
+      try {
+        const data = await KitotechApi.getAdminCategories();
+        setCategories(Array.isArray(data) ? data : (data.data || []));
+      } catch (_) {}
+    };
+
+    React.useEffect(() => { load(); }, []);
+    React.useEffect(() => {
+      if (active === 'products') { loadProducts(); loadCategories(); }
+    }, [active]);
+
+    const logout = async () => {
+      await KitotechApi.logout();
+      window.location.href = 'admin-login.html';
+    };
+
+    // ══ Open Add Form ═════════════════════════════════════════
+    const openAdd = () => {
+      setForm(emptyProductForm);
+      setEditProduct(null);
+      setMainImgFile(null); setMainImgPreview('');
+      setGalleryFiles([]); setGalleryPreviews([]);
+      setExistingGallery([]);
+      setColours([]);
+      setColourForm({ colour_name:'', colour_code:'#1a1a1a', status:'available' });
+      setFormError('');
+      setProductView('form');
+    };
+
+    // ══ Open Edit Form ════════════════════════════════════════
+    const openEdit = (p) => {
+      setForm({
+        name: p.name || '',
+        category_id: p.category_id || '',
+        short_description: p.short_description || '',
+        full_description: p.full_description || '',
+        price: p.price || '',
+        discount_price: p.discount_price || '',
+        status: p.status || 'draft',
+        is_featured: Boolean(p.is_featured),
+      });
+      setEditProduct(p);
+      setMainImgFile(null);
+      setMainImgPreview(p.main_image ? storageBase + p.main_image : '');
+      setGalleryFiles([]); setGalleryPreviews([]);
+      setExistingGallery(p.images || []);
+      setColours(p.colours || []);
+      setColourForm({ colour_name:'', colour_code:'#1a1a1a', status:'available' });
+      setFormError('');
+      setProductView('form');
+    };
+
+    // ══ Image Handlers ════════════════════════════════════════
+    const onMainImg = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      setMainImgFile(file);
+      setMainImgPreview(URL.createObjectURL(file));
+      e.target.value = '';
+    };
+
+    const onGallerySelect = (e) => {
+      const files = Array.from(e.target.files);
+      setGalleryFiles(prev => [...prev, ...files]);
+      setGalleryPreviews(prev => [...prev, ...files.map(f => URL.createObjectURL(f))]);
+      e.target.value = '';
+    };
+
+    const removeNewGallery = (i) => {
+      setGalleryFiles(prev => prev.filter((_,idx) => idx !== i));
+      setGalleryPreviews(prev => prev.filter((_,idx) => idx !== i));
+    };
+
+    const removeExistingImg = async (img) => {
+      try {
+        await KitotechApi.deleteProductImage(img.id);
+        setExistingGallery(prev => prev.filter(x => x.id !== img.id));
+      } catch (e) { setFormError(e.message); }
+    };
+
+    // ══ Colour Handlers ═══════════════════════════════════════
+    const addColour = async () => {
+      if (!colourForm.colour_name.trim()) return;
+      if (editProduct) {
+        try {
+          const res = await KitotechApi.addProductColour(editProduct.id, colourForm);
+          setColours(prev => [...prev, res.colour || res]);
+          setColourForm({ colour_name:'', colour_code:'#1a1a1a', status:'available' });
+        } catch (e) { setFormError(e.message); }
+      } else {
+        setColours(prev => [...prev, { ...colourForm, _new: true, _tid: Date.now() }]);
+        setColourForm({ colour_name:'', colour_code:'#1a1a1a', status:'available' });
+      }
+    };
+
+    const removeColour = async (c) => {
+      if (c._new) { setColours(prev => prev.filter(x => x._tid !== c._tid)); return; }
+      try {
+        await KitotechApi.deleteProductColour(c.id);
+        setColours(prev => prev.filter(x => x.id !== c.id));
+      } catch (e) { setFormError(e.message); }
+    };
+
+    // ══ Save Product ══════════════════════════════════════════
+    const saveProduct = async (forcedStatus) => {
+      const statusToUse = forcedStatus !== undefined ? forcedStatus : form.status;
+      if (!form.name.trim())       { setFormError('Jina la bidhaa linahitajika.'); return; }
+      if (!form.price)             { setFormError('Bei inahitajika.'); return; }
+      if (form.discount_price && +form.discount_price >= +form.price) {
+        setFormError('Bei ya punguzo lazima iwe chini ya bei ya kawaida.'); return;
+      }
+      setFormSaving(true); setFormError('');
+      try {
+        const fd = new FormData();
+        fd.append('name',              form.name);
+        fd.append('category_id',       form.category_id || '');
+        fd.append('short_description', form.short_description || '');
+        fd.append('full_description',  form.full_description || '');
+        fd.append('price',             form.price);
+        fd.append('discount_price',    form.discount_price || '');
+        fd.append('status',            statusToUse);
+        fd.append('is_featured',       form.is_featured ? '1' : '0');
+        if (mainImgFile) fd.append('main_image', mainImgFile);
+
+        let saved;
+        if (editProduct) {
+          fd.append('_method', 'PUT');
+          saved = await KitotechApi.updateProduct(editProduct.id, fd);
+        } else {
+          saved = await KitotechApi.createProduct(fd);
+        }
+
+        const pid = saved?.product?.id || saved?.id || editProduct?.id;
+
+        // Upload new gallery images
+        if (galleryFiles.length && pid) {
+          const gfd = new FormData();
+          galleryFiles.forEach(f => gfd.append('images[]', f));
+          await KitotechApi.uploadProductImages(pid, gfd).catch(e => {
+            setFormError('Bidhaa imehifadhiwa, lakini picha za gallery hazikupakia: ' + e.message);
+          });
+        }
+
+        // Save queued new colours (create mode)
+        if (!editProduct && pid) {
+          for (const c of colours.filter(x => x._new)) {
+            await KitotechApi.addProductColour(pid, {
+              colour_name: c.colour_name,
+              colour_code: c.colour_code,
+              status: c.status,
+            }).catch(() => {});
+          }
+        }
+
+        setProdSuccess(editProduct ? 'Bidhaa imebadilishwa.' : 'Bidhaa mpya imeongezwa.');
+        setProductView('list');
+        loadProducts();
+        setTimeout(() => setProdSuccess(''), 4000);
+      } catch (e) { setFormError(e.message); }
+      finally { setFormSaving(false); }
+    };
+
+    // ══ Delete Product ════════════════════════════════════════
+    const confirmDelete = async () => {
+      try {
+        await KitotechApi.deleteProduct(deleteTarget.id);
+        setDeleteTarget(null);
+        setProdSuccess('Bidhaa imefutwa.');
+        loadProducts();
+        setTimeout(() => setProdSuccess(''), 4000);
+      } catch (e) { setProdError(e.message); setDeleteTarget(null); }
+    };
+
+    // ══ Small Components ══════════════════════════════════════
+    const StatusBadge = ({ status }) => {
+      const map = {
+        published:    ['badge-pub',  'Published'],
+        draft:        ['badge-draft','Draft'],
+        out_of_stock: ['badge-oos',  'Out of Stock'],
+      };
+      const [cls, label] = map[status] || ['badge-draft', status];
+      return <span className={`prod-badge ${cls}`}>{label}</span>;
+    };
+
+    const ColourDot = ({ code }) => (
+      <span className="colour-swatch" style={{ background: code }} />
+    );
+
+    // ══ Render: Product List ══════════════════════════════════
+    const renderProductList = () => (
+      <div className="prod-list-view">
+        <div className="prod-list-head">
+          <div>
+            <div className="admin-kicker">PRODUCT CATALOGUE</div>
+            <h2>Products</h2>
+          </div>
+          <button className="btn btn-primary btn-skew" onClick={openAdd}>+ Add Product</button>
+        </div>
+
+        {prodSuccess && <div className="admin-success">{prodSuccess}</div>}
+        {prodError   && <p className="admin-error" style={{marginBottom:16}}>{prodError}</p>}
+
+        <div className="prod-filters">
+          <input
+            className="prod-search"
+            placeholder="Tafuta bidhaa..."
+            value={prodSearch}
+            onChange={e => setProdSearch(e.target.value)}
+          />
+          <select value={prodCat} onChange={e => setProdCat(e.target.value)}>
+            <option value="">Makundi Yote</option>
+            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+          <select value={prodStatus} onChange={e => setProdStatus(e.target.value)}>
+            <option value="">Hali Zote</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="out_of_stock">Out of Stock</option>
+          </select>
+          <button className="btn-icon-sm" onClick={loadProducts} title="Reload">↻</button>
+        </div>
+
+        {prodLoading ? (
+          <div className="admin-loading">Inapakia bidhaa...</div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="prod-empty">
+            {products.length === 0
+              ? <span>Hakuna bidhaa bado. <button className="link-btn" onClick={openAdd}>Ongeza bidhaa ya kwanza.</button></span>
+              : 'Hakuna bidhaa zinazolingana na utafutaji wako.'}
+          </div>
+        ) : (
+          <div className="prod-table-wrap">
+            <table className="prod-table">
+              <thead>
+                <tr>
+                  <th>Picha</th>
+                  <th>Jina / Maelezo</th>
+                  <th>Kundi</th>
+                  <th>Bei</th>
+                  <th>Punguzo</th>
+                  <th>Hali</th>
+                  <th className="center">★</th>
+                  <th>Vitendo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map(p => {
+                  const catName = categories.find(c => c.id == p.category_id)?.name;
+                  return (
+                    <tr key={p.id}>
+                      <td>
+                        {p.main_image
+                          ? <img className="prod-thumb" src={storageBase + p.main_image} alt={p.name} />
+                          : <div className="prod-thumb-empty"><Icon name="camera" size={16}/></div>}
+                      </td>
+                      <td>
+                        <div className="prod-name">{p.name}</div>
+                        {p.short_description && (
+                          <div className="prod-sub">
+                            {p.short_description.length > 55
+                              ? p.short_description.slice(0,55) + '…'
+                              : p.short_description}
+                          </div>
+                        )}
+                        {(p.colours || []).length > 0 && (
+                          <div className="prod-colour-dots">
+                            {p.colours.slice(0,6).map((c,i) => <ColourDot key={i} code={c.colour_code}/>)}
+                            {p.colours.length > 6 && <span className="prod-colour-more">+{p.colours.length-6}</span>}
+                          </div>
+                        )}
+                      </td>
+                      <td>{catName ? catName : <span className="muted">—</span>}</td>
+                      <td className="mono">KES {Number(p.price).toLocaleString()}</td>
+                      <td>
+                        {p.discount_price
+                          ? <>
+                              <div className="discount-price mono">KES {Number(p.discount_price).toLocaleString()}</div>
+                              {p.discount_percentage && <div className="discount-off">-{Math.round(p.discount_percentage)}% OFF</div>}
+                            </>
+                          : <span className="muted">—</span>}
+                      </td>
+                      <td><StatusBadge status={p.status}/></td>
+                      <td className="center">{p.is_featured ? <span className="star">★</span> : <span className="muted">—</span>}</td>
+                      <td>
+                        <div className="prod-actions">
+                          <button className="action-btn edit-btn" onClick={() => openEdit(p)}>Edit</button>
+                          <button className="action-btn del-btn"  onClick={() => setDeleteTarget(p)}>Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    );
+
+    // ══ Render: Product Form ══════════════════════════════════
+    const renderProductForm = () => (
+      <div className="prod-form-view">
+
+        {/* Header */}
+        <div className="prod-form-head">
+          <button className="back-btn" onClick={() => { setProductView('list'); setFormError(''); }}>
+            ← Rudi Orodha
+          </button>
+          <div>
+            <div className="admin-kicker">{editProduct ? 'HARIRI BIDHAA' : 'BIDHAA MPYA'}</div>
+            <h2>{editProduct ? editProduct.name : 'Ongeza Bidhaa'}</h2>
+          </div>
+        </div>
+
+        {formError && <p className="admin-error form-error-bar">{formError}</p>}
+
+        <div className="prod-form-body">
+
+          {/* ── A: Basic Info ── */}
+          <div className="form-section">
+            <div className="form-section-title">A — Taarifa za Msingi</div>
+            <div className="form-row">
+              <label>Jina la Bidhaa *</label>
+              <input
+                value={form.name}
+                onChange={e => setForm({...form, name: e.target.value})}
+                placeholder="e.g. Hikvision DS-2CD2143G2-I"
+              />
+            </div>
+            <div className="form-row">
+              <label>Kundi la Bidhaa</label>
+              <select value={form.category_id} onChange={e => setForm({...form, category_id: e.target.value})}>
+                <option value="">Chagua kundi...</option>
+                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div className="form-row">
+              <label>Maelezo Mafupi</label>
+              <input
+                value={form.short_description}
+                onChange={e => setForm({...form, short_description: e.target.value})}
+                placeholder="Kifupi — kinaonekana kwenye kadi ya bidhaa"
+                maxLength={500}
+              />
+              <span className="form-help">{form.short_description.length}/500 herufi</span>
+            </div>
+            <div className="form-row">
+              <label>Maelezo Kamili</label>
+              <textarea
+                rows={6}
+                value={form.full_description}
+                onChange={e => setForm({...form, full_description: e.target.value})}
+                placeholder="Maelezo yote ya bidhaa — yanaonekana ukurasa wa maelezo..."
+              />
+            </div>
+          </div>
+
+          {/* ── B: Pricing ── */}
+          <div className="form-section">
+            <div className="form-section-title">B — Bei</div>
+            <div className="form-row-2col">
+              <div className="form-row">
+                <label>Bei Tsh</label>
+                <input
+                  type="number" min="0" step="0.01"
+                  value={form.price}
+                  onChange={e => setForm({...form, price: e.target.value})}
+                  placeholder="85000"
+                />
+              </div>
+              <div className="form-row">
+                <label>Bei ya Punguzo (KES) — Hiari</label>
+                <input
+                  type="number" min="0" step="0.01"
+                  value={form.discount_price}
+                  onChange={e => setForm({...form, discount_price: e.target.value})}
+                  placeholder="Acha wazi kama hakuna punguzo"
+                />
+              </div>
+            </div>
+            {discountPct !== null && discountPct > 0 && (
+              <div className="discount-auto-badge">
+                Punguzo la <strong>{discountPct}%</strong> litaonekana moja kwa moja kwenye bidhaa.
+              </div>
+            )}
+            {form.discount_price && +form.discount_price >= +form.price && (
+              <p className="admin-error inline-err">Bei ya punguzo lazima iwe chini ya bei ya kawaida.</p>
+            )}
+          </div>
+
+          {/* ── C: Main Image ── */}
+          <div className="form-section">
+            <div className="form-section-title">C — Picha Kuu</div>
+            <div className="upload-zone" onClick={() => mainImgRef.current?.click()}>
+              {mainImgPreview
+                ? <img className="main-img-preview" src={mainImgPreview} alt="Picha kuu" />
+                : <div className="upload-zone-empty">
+                    <Icon name="camera" size={30}/>
+                    <span>Bonyeza kupakia picha kuu</span>
+                    <small>JPEG · PNG · WEBP — max 5 MB</small>
+                  </div>}
+            </div>
+            <input ref={mainImgRef} type="file" accept="image/*" style={{display:'none'}} onChange={onMainImg} />
+            {mainImgPreview && (
+              <button className="remove-img-btn" onClick={() => { setMainImgFile(null); setMainImgPreview(''); }}>
+                ✕ Ondoa Picha Kuu
+              </button>
+            )}
+          </div>
+
+          {/* ── D: Gallery ── */}
+          <div className="form-section">
+            <div className="form-section-title">D — Gallery za Picha</div>
+            <div className="gallery-grid">
+              {existingGallery.map(img => (
+                <div className="gallery-thumb" key={img.id}>
+                  <img src={storageBase + img.image_path} alt="" />
+                  <button className="gallery-remove" onClick={() => removeExistingImg(img)}>✕</button>
+                </div>
+              ))}
+              {galleryPreviews.map((src, i) => (
+                <div className="gallery-thumb" key={'n'+i} style={{opacity:0.85}}>
+                  <img src={src} alt="" />
+                  <button className="gallery-remove" onClick={() => removeNewGallery(i)}>✕</button>
+                </div>
+              ))}
+              <div className="gallery-add" onClick={() => galleryImgRef.current?.click()}>
+                <Icon name="camera" size={20}/>
+                <span>+ Ongeza</span>
+              </div>
+            </div>
+            <input ref={galleryImgRef} type="file" accept="image/*" multiple style={{display:'none'}} onChange={onGallerySelect} />
+            <p className="form-help">Unaweza kupakia picha nyingi kwa wakati mmoja. Max 5 MB kila picha.</p>
+          </div>
+
+          {/* ── E: Colours ── */}
+          <div className="form-section">
+            <div className="form-section-title">E — Chaguo za Rangi</div>
+
+            {colours.length > 0 && (
+              <table className="colour-table">
+                <thead>
+                  <tr>
+                    <th>Rangi</th>
+                    <th>Jina</th>
+                    <th>Hex Code</th>
+                    <th>Hali</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {colours.map((c, i) => (
+                    <tr key={c.id || c._tid || i}>
+                      <td><span className="colour-swatch" style={{background:c.colour_code, width:20, height:20, borderRadius:'50%', display:'inline-block', border:'1px solid rgba(0,0,0,0.15)'}}/></td>
+                      <td>{c.colour_name}</td>
+                      <td className="mono">{c.colour_code}</td>
+                      <td>
+                        <span className={`prod-badge ${c.status === 'available' ? 'badge-pub' : 'badge-oos'}`}>
+                          {c.status === 'available' ? 'Inapatikana' : 'Haipatikani'}
+                        </span>
+                      </td>
+                      <td>
+                        <button className="action-btn del-btn sm" onClick={() => removeColour(c)}>✕</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            <div className="colour-add-form">
+              <div className="colour-add-row">
+                <input
+                  className="colour-name-inp"
+                  value={colourForm.colour_name}
+                  onChange={e => setColourForm({...colourForm, colour_name: e.target.value})}
+                  placeholder="Jina la rangi (e.g. Matte Black)"
+                />
+                <div className="colour-hex-group">
+                  <input
+                    type="color"
+                    className="colour-picker"
+                    value={colourForm.colour_code}
+                    onChange={e => setColourForm({...colourForm, colour_code: e.target.value})}
+                  />
+                  <input
+                    className="colour-hex-inp"
+                    value={colourForm.colour_code}
+                    onChange={e => setColourForm({...colourForm, colour_code: e.target.value})}
+                    placeholder="#1a1a1a"
+                  />
+                </div>
+                <select
+                  value={colourForm.status}
+                  onChange={e => setColourForm({...colourForm, status: e.target.value})}
+                >
+                  <option value="available">Inapatikana</option>
+                  <option value="unavailable">Haipatikani</option>
+                </select>
+                <button
+                  className="action-btn edit-btn"
+                  onClick={addColour}
+                  disabled={!colourForm.colour_name.trim()}
+                >
+                  + Ongeza Rangi
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* ── F: Settings ── */}
+          <div className="form-section">
+            <div className="form-section-title">F — Mipangilio</div>
+            <div className="form-row">
+              <label>Hali ya Bidhaa</label>
+              <div className="status-radio-group">
+                {[
+                  ['published',    'Imechapishwa'],
+                  ['draft',        'Rasimu'],
+                  ['out_of_stock', 'Nje ya Hifadhi'],
+                ].map(([val, label]) => (
+                  <label key={val} className={`status-radio ${form.status === val ? 'active' : ''}`}>
+                    <input type="radio" name="prod-status" value={val}
+                      checked={form.status === val}
+                      onChange={() => setForm({...form, status: val})}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div className="form-row">
+              <label className="toggle-label">
+                <input
+                  type="checkbox"
+                  checked={form.is_featured}
+                  onChange={e => setForm({...form, is_featured: e.target.checked})}
+                />
+                <span className="toggle-track"></span>
+                <span>Bidhaa Maarufu <small>(itaonyeshwa kwenye ukurasa wa nyumbani)</small></span>
+              </label>
+            </div>
+          </div>
+
+        </div>{/* end prod-form-body */}
+
+        {/* Action Buttons */}
+        <div className="form-actions">
+          <button
+            className="btn btn-ghost btn-skew"
+            onClick={() => { setProductView('list'); setFormError(''); }}
+          >
+            Ghairi
+          </button>
+          <button
+            className="btn btn-dark btn-skew"
+            onClick={() => saveProduct('draft')}
+            disabled={formSaving}
+          >
+            Hifadhi kama Rasimu
+          </button>
+          <button
+            className="btn btn-primary btn-skew"
+            onClick={() => saveProduct()}
+            disabled={formSaving}
+          >
+            {formSaving ? 'Inahifadhi...' : editProduct ? 'Hifadhi Mabadiliko' : 'Chapisha Bidhaa'}
+          </button>
+        </div>
+
+      </div>
+    );
+
+    // ══ Render: Products (parent) ═════════════════════════════
+    const renderProducts = () => (
+      <>
+        {productView === 'list' && renderProductList()}
+        {productView === 'form' && renderProductForm()}
+
+        {/* Delete Confirmation Modal */}
+        {deleteTarget && (
+          <div className="modal-overlay">
+            <div className="modal-box">
+              <div className="modal-title">Futa Bidhaa?</div>
+              <p>
+                Una uhakika wa kufuta <strong>{deleteTarget.name}</strong>?
+                Picha zote na rangi za bidhaa hii zitafutwa pia. Kitendo hiki hakiwezi kubatilishwa.
+              </p>
+              <div className="modal-actions">
+                <button className="action-btn edit-btn" style={{padding:'10px 20px'}} onClick={() => setDeleteTarget(null)}>
+                  Ghairi
+                </button>
+                <button className="btn-red" onClick={confirmDelete}>Futa</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+
+    // ══ Dashboard Renders ════════════════════════════════════
+    const metrics = [
+      ['Products',         dashboard.totals.products],
+      ['Services',         dashboard.totals.services],
+      ['Service Requests', dashboard.totals.service_requests],
+      ['Inquiries',        dashboard.totals.contact_inquiries],
+      ['AI Conversations', dashboard.totals.ai_conversations],
+    ];
+
+    const renderContacts = () => (
+      <Panel title="Contact Inquiries">
+        <List items={contacts} empty="Hakuna inquiry bado." render={item => (
+          <div className="admin-item">
+            <div className="admin-item-title">{item.name}</div>
+            <div className="admin-item-meta">{item.email || item.phone || 'No contact'} · {item.subject || 'Website inquiry'}</div>
+            <p>{item.message}</p>
+          </div>
+        )} />
+      </Panel>
+    );
+
+    const renderAi = () => (
+      <Panel title="AI Conversations">
+        <List items={ai} empty="Hakuna AI conversation bado." render={item => (
+          <div className="admin-item">
+            <div className="admin-item-title">{item.question}</div>
+            <div className="admin-item-meta">{new Date(item.created_at).toLocaleString()}</div>
+            <p>{item.response}</p>
+          </div>
+        )} />
+      </Panel>
+    );
+
+    const renderRequests = () => (
+      <Panel title="Service Requests">
+        <List items={requests} empty="Hakuna service request bado." render={item => (
+          <div className="admin-item">
+            <div className="admin-item-title">{item.customer_name}</div>
+            <div className="admin-item-meta">{item.phone} · {item.status}</div>
+            <p>{item.message || 'No message'}</p>
+          </div>
+        )} />
+      </Panel>
+    );
+
+    // ══ Main Render ═══════════════════════════════════════════
+    return (
+      <main className="admin-shell">
+
+        {/* Sidebar */}
+        <aside className="admin-side">
+          <a className="admin-brand" href="index.html">
+            <img src="./assets/logo-mark-white.png" alt="Kitotech" />
+            <div>
+              <strong>KITOTECH</strong>
+              <span>Admin Panel</span>
+            </div>
+          </a>
+          <nav className="admin-nav">
+            <button className={active === 'overview'  ? 'active' : ''} onClick={() => setActive('overview')}>
+              <Icon name="server"       size={16}/> Overview
+            </button>
+            <button className={active === 'products'  ? 'active' : ''} onClick={() => setActive('products')}>
+              <Icon name="camera"       size={16}/> Products
+            </button>
+            <button className={active === 'contacts'  ? 'active' : ''} onClick={() => setActive('contacts')}>
+              <Icon name="mail"         size={16}/> Inquiries
+            </button>
+            <button className={active === 'requests'  ? 'active' : ''} onClick={() => setActive('requests')}>
+              <Icon name="shield-check" size={16}/> Requests
+            </button>
+            <button className={active === 'ai'        ? 'active' : ''} onClick={() => setActive('ai')}>
+              <Icon name="spark"        size={16}/> AI Monitor
+            </button>
+            <a href="products.html">
+              <Icon name="arrow" size={16}/> Public Site
+            </a>
+            <button className="danger" onClick={logout}>
+              <Icon name="x" size={16}/> Logout
+            </button>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <section className="admin-main">
+          <div className="admin-top">
+            <div>
+              <div className="admin-kicker">LIVE DASHBOARD</div>
+              <h1>Website Control Center</h1>
+            </div>
+            <div className="admin-status">{loading ? 'Loading' : 'Backend Online'}</div>
+          </div>
+
+          {error && <p className="admin-error" style={{marginTop:20}}>{error}</p>}
+
+          {active === 'overview' && (
+            <>
+              <div className="metric-grid">
+                {metrics.map(([label, value]) => (
+                  <div className="metric" key={label}>
+                    <div className="metric-value">{value}</div>
+                    <div className="metric-label">{label}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="admin-grid">
+                {renderContacts()}
+                {renderAi()}
+              </div>
+            </>
+          )}
+
+          {active === 'products'  && renderProducts()}
+          {active === 'contacts'  && renderContacts()}
+          {active === 'requests'  && renderRequests()}
+          {active === 'ai'        && renderAi()}
+
+        </section>
+      </main>
+    );
+  };
+
+  ReactDOM.createRoot(document.getElementById('app')).render(<AdminDashboard />);
+  </script>
+</body>
+</html>

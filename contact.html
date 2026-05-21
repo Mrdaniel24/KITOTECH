@@ -16,9 +16,10 @@
   <div id="app"></div>
 
   <script type="text/babel" src="Icon.jsx"></script>
+  <script src="Api.js?v=backend1"></script>
   <script type="text/babel" src="Nav.jsx"></script>
   <script type="text/babel" src="Footer.jsx"></script>
-  <script type="text/babel" src="Floaters.jsx"></script>
+  <script type="text/babel" src="Floaters.jsx?v=backend1"></script>
 
   <script type="text/babel">
   const services = [
@@ -32,9 +33,42 @@
 
   const ContactPage = () => {
     const [sent, setSent] = React.useState(false);
+    const [sending, setSending] = React.useState(false);
+    const [error, setError] = React.useState('');
     const [form, setForm] = React.useState({ jina:'', kampuni:'', simu:'', email:'', huduma:'', ujumbe:'' });
+    const [serviceOptions, setServiceOptions] = React.useState(services);
     const handle = e => setForm({...form, [e.target.name]: e.target.value});
-    const submit = e => { e.preventDefault(); setSent(true); };
+    React.useEffect(() => {
+      KitotechApi.getServices()
+        .then(items => {
+          const names = items.map(s => s.name).filter(Boolean);
+          if (names.length) setServiceOptions(names);
+        })
+        .catch(() => {});
+    }, []);
+    const submit = async e => {
+      e.preventDefault();
+      setError('');
+      setSending(true);
+      try {
+        await KitotechApi.sendContact({
+          name: form.jina,
+          phone: form.simu,
+          email: form.email || null,
+          subject: form.huduma || 'Website contact',
+          message: [
+            form.kampuni ? 'Kampuni: ' + form.kampuni : '',
+            form.ujumbe,
+          ].filter(Boolean).join('\n\n'),
+        });
+        setSent(true);
+        setForm({ jina:'', kampuni:'', simu:'', email:'', huduma:'', ujumbe:'' });
+      } catch (err) {
+        setError(err.message || 'Ujumbe haujatumwa. Hakikisha backend ipo wazi.');
+      } finally {
+        setSending(false);
+      }
+    };
 
     return (
       <>
@@ -46,7 +80,7 @@
           <div className="container page-hero-content">
             <div className="eyebrow-row"><span className="eyebrow">WASILIANA NASI</span></div>
             <h1>Tuko tayari <span className="accent">kukusaidia.</span></h1>
-            <p>Omba onyesho, pata bei, au uliza swali lolote - timu yetu itakujibu ndani ya masaa 4.</p>
+            <p>Pata bei, au uliza swali lolote - timu yetu itakujibu ndani ya masaa 4.</p>
           </div>
           <div className="page-hero-wedge" />
         </section>
@@ -88,15 +122,16 @@
                     <label>Huduma unayohitaji</label>
                     <select className="field field-select" name="huduma" value={form.huduma} onChange={handle}>
                       <option value="">Chagua huduma...</option>
-                      {services.map((s, i) => <option key={i} value={s}>{s}</option>)}
+                      {serviceOptions.map((s, i) => <option key={i} value={s}>{s}</option>)}
                     </select>
                   </div>
                   <div className="form-row">
                     <label>Ujumbe wako *</label>
                     <textarea className="field" name="ujumbe" value={form.ujumbe} onChange={handle} required rows={5} placeholder="Niambie zaidi kuhusu mradi wako..." />
                   </div>
-                  <button type="submit" className="btn btn-primary btn-skew submit-btn">
-                    Tuma Ujumbe <Icon name="send" size={14} />
+                  {error && <p style={{color:'var(--brand-red)', font:'500 12px/1.5 var(--font-body)', margin:0}}>{error}</p>}
+                  <button type="submit" className="btn btn-primary btn-skew submit-btn" disabled={sending}>
+                    {sending ? 'Inatuma...' : 'Tuma Ujumbe'} <Icon name="send" size={14} />
                   </button>
                 </form>
               )}

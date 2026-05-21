@@ -32,7 +32,7 @@ const Nav = () => {
             <a href="solutions.html"className={page === 'solutions.html'? 'active' : ''} onClick={() => setIsOpen(false)}>SULUHISHO</a>
             <a href="contact.html"  className={page === 'contact.html'  ? 'active' : ''} onClick={() => setIsOpen(false)}>WASILIANA</a>
           </nav>
-          <a href="contact.html" className="btn btn-primary btn-skew nav-cta">Omba Onyesho <Icon name="arrow" size={14}/></a>
+          <a href="admin-login.html" className="btn btn-primary btn-skew nav-cta">Ingia <Icon name="arrow" size={14}/></a>
           <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
             <div className={`hamburger ${isOpen ? 'active' : ''}`}>
               <span></span>
