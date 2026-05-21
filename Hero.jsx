@@ -3,25 +3,26 @@
   const [vals, setVals] = React.useState([0, 0, 0, 0]);
   const counted = React.useRef(false);
   const panelRef = React.useRef(null);
+  const videoRefs = React.useRef([]);
 
   const slides = [
     {
       eyebrow: 'WAKALA ALIYEIDHINISHWA — HIKVISION',
       headline: <>Usalama wa daraja la <em className="accent">kimataifa,</em> unaofika kwako.</>,
       sub: 'Kamera za 4K, AI ya ndani ya kifaa, udhibiti wa milango — mfumo mmoja unaounganisha vituo vyako vyote.',
-      img: 'hero-1',
+      video: 'camera-reveal.mp4',
     },
     {
       eyebrow: 'MIFUMO YA USALAMA',
       headline: <>Tahadhari ndani ya <em className="accent">milisekunde 80.</em></>,
       sub: 'AI yetu inagundua tukio na kuwasiliana na timu yako — kabla hata mtu hajaona kwa macho.',
-      img: 'hero-2',
+      video: 'fence-pulse.mp4',
     },
     {
       eyebrow: 'HUDUMA YA SAA 24',
       headline: <>Wataalamu wetu wako <em className="accent">zamu.</em> Kila wakati.</>,
       sub: 'Wahandisi walioidhinishwa, msaada wa dakika 4 kupitia WhatsApp, na dhamana ya miaka 2 kwa kila mradi.',
-      img: 'hero-3',
+      video: 'panel-poweron.mp4',
     },
   ];
 
@@ -29,6 +30,14 @@
     const t = setInterval(() => setSlide(s => (s + 1) % slides.length), 6000);
     return () => clearInterval(t);
   }, []);
+
+  React.useEffect(() => {
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === slide) { v.play().catch(() => {}); }
+      else { v.pause(); }
+    });
+  }, [slide]);
 
   React.useEffect(() => {
     const obs = new IntersectionObserver(([e]) => {
@@ -109,13 +118,21 @@
         {/* RIGHT — Picha + overlay ya tech */}
         <div className="hero-visual">
 
-          {/* Picha za slides — zinaonyesha moja baada ya nyingine */}
+          {/* Video slides — zinaonyesha moja baada ya nyingine */}
           {slides.map((s, i) => (
             <div
               key={i}
               className={`hero-img ${i === slide ? 'active' : ''}`}
-              style={{ backgroundImage: `url('./assets/images/${s.img}.jpg')` }}
-            />
+            >
+              <video
+                ref={el => { videoRefs.current[i] = el; }}
+                src={`./videos/${s.video}`}
+                muted
+                loop
+                playsInline
+                className="hero-video-bg"
+              />
+            </div>
           ))}
 
           {/* Overlay ya tech: scan line + corner brackets */}

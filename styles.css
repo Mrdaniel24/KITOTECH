@@ -645,11 +645,22 @@ body {
   z-index: 1;
 }
 
-/* IMAGE SLOT — set backgroundImage inline in JSX; sits above fallback */
+/* IMAGE SLOT — Ken Burns slow zoom on page load */
+@keyframes heroKenBurns {
+  from { transform: scale(1)    translate(0,    0);    opacity: 0.6; }
+  to   { transform: scale(1.07) translate(-1%, -0.5%); opacity: 1;   }
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
 .page-hero-bg {
   position: absolute; inset: 0;
   background: center/cover no-repeat transparent;
   z-index: 2;
+  animation: heroKenBurns 10s ease-out forwards;
+  transform-origin: center center;
 }
 
 .page-hero-overlay {
@@ -663,14 +674,21 @@ body {
   padding: 100px 32px 80px;
   max-width: 720px;
 }
-.page-hero-content .eyebrow-row { margin-bottom: 16px; }
+.page-hero-content .eyebrow-row {
+  margin-bottom: 16px;
+  animation: heroFadeUp 0.7s ease-out 0.1s both;
+}
 .page-hero-content .eyebrow { color: var(--brand-red); letter-spacing: 0.22em; }
 .page-hero-content h1 {
   font: 700 clamp(36px, 4vw, 60px)/1.06 var(--font-display);
   letter-spacing: -0.02em; color: #fff; margin: 0 0 20px;
+  animation: heroFadeUp 0.7s ease-out 0.28s both;
 }
 .page-hero-content h1 .accent { color: var(--brand-red); font-style: italic; }
-.page-hero-content p { font: 400 16px/1.6 var(--font-body); color: rgba(255,255,255,0.82); margin: 0; max-width: 580px; }
+.page-hero-content p {
+  font: 400 16px/1.6 var(--font-body); color: rgba(255,255,255,0.82); margin: 0; max-width: 580px;
+  animation: heroFadeUp 0.7s ease-out 0.44s both;
+}
 
 .page-hero-wedge {
   position: absolute; right: 0; top: 0; bottom: 0; width: 8px;
