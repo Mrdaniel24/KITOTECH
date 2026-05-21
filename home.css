@@ -880,8 +880,19 @@
    ----------------------------------------------------------- */
 @media (max-width: 960px) {
   .hero-inner         { grid-template-columns: 1fr; min-height: auto; }
+  /* Hide the vertical divider line — becomes an ugly horizontal edge on mobile */
+  .hero-inner::after  { display: none; }
   .hero-copy          { padding: 48px 32px 40px; justify-content: flex-start; }
   .hero-visual        { height: 280px; clip-path: none; }
+  /* Gradient at top of visual section to blend seamlessly with copy section */
+  .hero-visual::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 72px;
+    background: linear-gradient(180deg, #060818 0%, transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+  }
   .hero-float-stats   {
     position: relative; bottom: auto; left: auto; transform: none;
     width: 100%; max-width: 100%; border-radius: 0;
